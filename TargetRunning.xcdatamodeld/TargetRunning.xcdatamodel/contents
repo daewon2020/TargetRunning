@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21F79" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Activity" representedClassName="Activity" syncable="YES" codeGenerationType="class">
+        <attribute name="avgPace" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="distance" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="time" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="coordinate" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RouteCoordinate" inverseName="activity" inverseEntity="RouteCoordinate"/>
+        <relationship name="pace" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Pace" inverseName="activity" inverseEntity="Pace"/>
+    </entity>
+    <entity name="Pace" representedClassName="Pace" syncable="YES" codeGenerationType="class">
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="time" optional="YES" attributeType="Integer 64" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="activity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Activity" inverseName="pace" inverseEntity="Activity"/>
+    </entity>
+    <entity name="RouteCoordinate" representedClassName="RouteCoordinate" syncable="YES" codeGenerationType="class">
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="latitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="activity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Activity" inverseName="coordinate" inverseEntity="Activity"/>
+    </entity>
+    <elements>
+        <element name="Activity" positionX="-45" positionY="0" width="128" height="134"/>
+        <element name="RouteCoordinate" positionX="-18" positionY="63" width="128" height="89"/>
+        <element name="Pace" positionX="-27" positionY="72" width="128" height="74"/>
+    </elements>
+</model>
