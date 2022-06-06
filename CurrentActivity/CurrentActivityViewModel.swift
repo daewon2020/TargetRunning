@@ -1,5 +1,5 @@
 //
-//  CurrentActivityParametersViewModel.swift
+//  CurrentActivityViewModel.swift
 //  TargetRunning
 //
 //  Created by Константин Андреев on 23.05.2022.
@@ -15,7 +15,7 @@ enum TimerState {
     case Stop
 }
 
-protocol CurrentActivityParametersProtocol {
+protocol CurrentActivityProtocol {
     var paceSegment: Int { get }
     var paceSegmentString: String { get }
     var paceDistance: Double { get }
@@ -39,7 +39,7 @@ protocol CurrentActivityParametersProtocol {
     init(startParametes: StartParameters)
 }
 
-class CurrentActivityParametersViewModel: NSObject, CurrentActivityParametersProtocol {
+class CurrentActivityParametersViewModel: NSObject, CurrentActivityProtocol {
     
     var paceSegment: Int {
         get {
@@ -103,14 +103,14 @@ class CurrentActivityParametersViewModel: NSObject, CurrentActivityParametersPro
         self.startParameters = startParametes
         super.init()
         
-        TimeManager.shared.bind { [weak self] time in
-            self?.time.value = time
-            self?.paceTime += 1
-            self?.addRouteCoordinate()
+        TimeManager.shared.bind { time in
+            self.time.value = time
+            self.paceTime += 1
+            self.addRouteCoordinate()
         }
         
-        LocationManager.shared.bind { [weak self] currentLocation in
-            self?.currentLocation = currentLocation
+        LocationManager.shared.bind { currentLocation in
+            self.currentLocation = currentLocation
         }
     }
     

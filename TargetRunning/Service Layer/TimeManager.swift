@@ -63,8 +63,8 @@ class TimeManager {
     }
     
     private func registerBackgroundTask() {
-        backgroundTask = UIApplication.shared.beginBackgroundTask { [weak self] in
-            self?.endBackgroundTask()
+        backgroundTask = UIApplication.shared.beginBackgroundTask { 
+            self.endBackgroundTask()
         }
         assert(backgroundTask != .invalid)
     }

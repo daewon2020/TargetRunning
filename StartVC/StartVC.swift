@@ -78,19 +78,16 @@ class StartVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel = StartViewModel()
-        viewModel.runGoal.bind { [weak self] runGoal in
-            switch self?.viewModel.runGoal.value {
+        viewModel.runGoal.bind { runGoal in
+            switch self.viewModel.runGoal.value {
                 case .Distance:
-                    self?.goalValueButton.setTitle("00,00", for: .normal)
-                    self?.goalValueButton.configuration?.subtitle = "kilometers"
-                    self?.goalButton.setTitle("distance", for: .normal)
+                    self.goalValueButton.setTitle("00,00", for: .normal)
+                    self.goalValueButton.configuration?.subtitle = "kilometers"
+                    self.goalButton.setTitle("distance", for: .normal)
                 case .Time:
-                    self?.goalValueButton.setTitle("00:00", for: .normal)
-                    self?.goalValueButton.configuration?.subtitle = "hourse:minutes"
-                    self?.goalButton.setTitle("time", for: .normal)
-                case .none:
-                    self?.goalValueButton.setTitle("", for: .normal)
-                    self?.goalValueButton.configuration?.subtitle = ""
+                    self.goalValueButton.setTitle("00:00", for: .normal)
+                    self.goalValueButton.configuration?.subtitle = "hourse:minutes"
+                    self.goalButton.setTitle("time", for: .normal)
             }
         }
         
@@ -134,7 +131,7 @@ class StartVC: UIViewController {
     }
     
     @objc private func startButtonTapped() {
-        guard let vc = storyboard?.instantiateViewController(withIdentifier: "currentActivity") as? CurrentActivityParametersVC else { return }
+        guard let vc = storyboard?.instantiateViewController(withIdentifier: "currentActivity") as? CurrentActivityVC else { return }
         vc.modalPresentationStyle = .fullScreen
         vc.viewModel =  CurrentActivityParametersViewModel(startParametes: viewModel.getStartParameters())
         present(vc, animated: true)
@@ -144,8 +141,8 @@ class StartVC: UIViewController {
         viewModel.setGoalValue(
             for: goalPickerView.selectedRow(inComponent: 0),
             and: goalPickerView.selectedRow(inComponent: 1)
-        ) { [weak self] goalValueString in
-            self?.goalValueButton.setTitle(goalValueString, for: .normal)
+        ) { goalValueString in
+            self.goalValueButton.setTitle(goalValueString, for: .normal)
             print(goalValueString)
         }
         

@@ -162,7 +162,7 @@
         <!--Start-->
         <scene sceneID="2ec-lB-04c">
             <objects>
-                <viewController storyboardIdentifier="currentActivity" useStoryboardIdentifierAsRestorationIdentifier="YES" id="sIJ-Yw-y1G" customClass="CurrentActivityParametersVC" customModule="TargetRunning" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="currentActivity" useStoryboardIdentifierAsRestorationIdentifier="YES" id="sIJ-Yw-y1G" customClass="CurrentActivityVC" customModule="TargetRunning" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="rMa-J8-7kB">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -213,31 +213,61 @@
                                             </button>
                                         </subviews>
                                     </stackView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hbt-AZ-NwT">
+                                        <rect key="frame" x="97.5" y="566" width="80" height="80"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="Hbt-AZ-NwT" secondAttribute="height" multiplier="1:1" id="KJV-eI-trH"/>
+                                            <constraint firstAttribute="width" constant="80" id="mDi-Zh-1rG"/>
+                                        </constraints>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="Finish">
+                                            <color key="titleColor" systemColor="labelColor"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="finishButtonPressed:" destination="sIJ-Yw-y1G" eventType="touchUpInside" id="HEX-b6-K5o"/>
+                                        </connections>
+                                    </button>
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="|" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KJv-j4-lSz">
+                                        <rect key="frame" x="182.5" y="596.5" width="10" height="20.5"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="10" id="XFq-Ms-SCP"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QdP-3f-88p">
+                                        <rect key="frame" x="197.5" y="566" width="80" height="80"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="QdP-3f-88p" secondAttribute="height" multiplier="1:1" id="9Zd-CN-RBH"/>
+                                            <constraint firstAttribute="width" constant="80" id="SKG-bK-hy3"/>
+                                        </constraints>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="Stop">
+                                            <color key="titleColor" systemColor="labelColor"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="stopResumeButtonPressed" destination="sIJ-Yw-y1G" eventType="touchUpInside" id="ftg-TF-sQg"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstItem="lWt-bT-5vv" firstAttribute="centerY" secondItem="E54-57-0ql" secondAttribute="centerY" id="AjF-Go-dqg"/>
                                     <constraint firstAttribute="trailing" secondItem="Pgy-Xt-DTN" secondAttribute="trailing" constant="20" id="BPv-jZ-m4e"/>
+                                    <constraint firstItem="KJv-j4-lSz" firstAttribute="centerX" secondItem="E54-57-0ql" secondAttribute="centerX" id="H8d-Ot-wcJ"/>
+                                    <constraint firstItem="KJv-j4-lSz" firstAttribute="leading" secondItem="Hbt-AZ-NwT" secondAttribute="trailing" constant="5" id="NyE-I7-FGx"/>
                                     <constraint firstAttribute="trailing" secondItem="lWt-bT-5vv" secondAttribute="trailing" constant="20" id="PTw-Kc-VMC"/>
+                                    <constraint firstAttribute="bottom" secondItem="QdP-3f-88p" secondAttribute="bottom" constant="21" id="RXP-2a-Nyu"/>
                                     <constraint firstItem="Pgy-Xt-DTN" firstAttribute="top" secondItem="E54-57-0ql" secondAttribute="top" constant="20" id="Tp9-MR-uZZ"/>
+                                    <constraint firstAttribute="bottom" secondItem="KJv-j4-lSz" secondAttribute="bottom" constant="50" id="VUK-vd-BDH"/>
+                                    <constraint firstItem="QdP-3f-88p" firstAttribute="leading" secondItem="KJv-j4-lSz" secondAttribute="trailing" constant="5" id="Z2v-sj-dC3"/>
                                     <constraint firstItem="lWt-bT-5vv" firstAttribute="leading" secondItem="E54-57-0ql" secondAttribute="leading" constant="20" id="dOs-L6-PrE"/>
                                     <constraint firstItem="Pgy-Xt-DTN" firstAttribute="leading" secondItem="E54-57-0ql" secondAttribute="leading" constant="20" id="sWm-9x-fzu"/>
+                                    <constraint firstItem="QdP-3f-88p" firstAttribute="width" secondItem="QdP-3f-88p" secondAttribute="height" multiplier="1:1" id="vXd-hP-Y1b"/>
+                                    <constraint firstAttribute="bottom" secondItem="Hbt-AZ-NwT" secondAttribute="bottom" constant="21" id="vyf-ZO-TRt"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hbt-AZ-NwT">
-                                <rect key="frame" x="147.5" y="567" width="80" height="80"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="Hbt-AZ-NwT" secondAttribute="height" multiplier="1:1" id="KJV-eI-trH"/>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="80" id="mDi-Zh-1rG"/>
-                                </constraints>
-                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" title="Start">
-                                    <color key="titleColor" systemColor="labelColor"/>
-                                </state>
-                                <connections>
-                                    <action selector="startButtonPressed:" destination="sIJ-Yw-y1G" eventType="touchUpInside" id="01J-ke-QAX"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U7u-oX-ptt">
                                 <rect key="frame" x="20" y="586" width="45" height="45"/>
                                 <constraints>
@@ -263,20 +293,19 @@
                             <constraint firstItem="E54-57-0ql" firstAttribute="bottom" secondItem="AOq-ld-Whj" secondAttribute="bottom" id="T5Z-eg-tmb"/>
                             <constraint firstItem="U7u-oX-ptt" firstAttribute="leading" secondItem="n5A-Ba-Caz" secondAttribute="leading" constant="20" id="cLD-rh-hgb"/>
                             <constraint firstItem="AOq-ld-Whj" firstAttribute="bottom" secondItem="n5A-Ba-Caz" secondAttribute="bottom" id="gHB-41-NkR"/>
-                            <constraint firstItem="Hbt-AZ-NwT" firstAttribute="centerX" secondItem="rMa-J8-7kB" secondAttribute="centerX" id="igw-Wm-Ni5"/>
-                            <constraint firstItem="n5A-Ba-Caz" firstAttribute="bottom" secondItem="Hbt-AZ-NwT" secondAttribute="bottom" constant="20" id="qL2-1L-lX2"/>
                             <constraint firstItem="E54-57-0ql" firstAttribute="trailing" secondItem="AOq-ld-Whj" secondAttribute="trailing" id="wwc-Y0-T9r"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Start" image="timer.square" catalog="system" id="sd7-CK-BOB"/>
                     <connections>
+                        <outlet property="finishButton" destination="Hbt-AZ-NwT" id="XYa-Wu-3zS"/>
                         <outlet property="mainButton" destination="lWt-bT-5vv" id="ZEd-3h-mao"/>
                         <outlet property="mapButton" destination="U7u-oX-ptt" id="wto-QE-Xff"/>
                         <outlet property="mapView" destination="AOq-ld-Whj" id="UzG-ne-2eX"/>
                         <outlet property="paramView" destination="E54-57-0ql" id="jfD-aI-Ift"/>
                         <outlet property="paramViewLeadingConstraint" destination="Mq0-Ot-AVq" id="6gS-5w-BEN"/>
                         <outlet property="paramViewTrailingConstraint" destination="wwc-Y0-T9r" id="ACx-Gz-LwP"/>
-                        <outlet property="startButton" destination="Hbt-AZ-NwT" id="YeB-8g-uWg"/>
+                        <outlet property="stopResumeButton" destination="QdP-3f-88p" id="PWk-6K-cIx"/>
                         <outlet property="topCenterButton" destination="ebF-72-APW" id="GPm-UU-iJt"/>
                         <outlet property="topLeftButton" destination="LzD-fs-89Q" id="QzL-PO-Div"/>
                         <outlet property="topRightButton" destination="m8Y-70-TeQ" id="MCg-TG-ItK"/>
