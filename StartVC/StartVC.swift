@@ -113,6 +113,10 @@ class StartVC: UIViewController {
         goalTextField.becomeFirstResponder()
     }
     
+    private func fetchData() {
+        
+    }
+    
     private func setConstraints() {
         NSLayoutConstraint.activate(
             [
@@ -131,9 +135,12 @@ class StartVC: UIViewController {
     }
     
     @objc private func startButtonTapped() {
+        if let wrongGoalAlert = viewModel.startButtonTapped() {
+            present(wrongGoalAlert, animated: true)
+        }
         guard let vc = storyboard?.instantiateViewController(withIdentifier: "currentActivity") as? CurrentActivityVC else { return }
         vc.modalPresentationStyle = .fullScreen
-        vc.viewModel =  CurrentActivityParametersViewModel(startParametes: viewModel.getStartParameters())
+        vc.viewModel =  CurrentActivityViewModel(startParametes: viewModel.getStartParameters())
         present(vc, animated: true)
     }
     
@@ -143,7 +150,6 @@ class StartVC: UIViewController {
             and: goalPickerView.selectedRow(inComponent: 1)
         ) { goalValueString in
             self.goalValueButton.setTitle(goalValueString, for: .normal)
-            print(goalValueString)
         }
         
         goalTextField.resignFirstResponder()
@@ -175,7 +181,6 @@ extension StartVC: UIPickerViewDataSource, UIPickerViewDelegate {
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        
         switch viewModel.runGoal.value {
             case .Distance:
                 switch component {

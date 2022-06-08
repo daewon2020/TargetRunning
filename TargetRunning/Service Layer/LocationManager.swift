@@ -53,13 +53,6 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         self.listener = listener
         listener(currentLocation)
     }
-    
-    func getCurrentLocation() -> CLLocationCoordinate2D? {
-        start()
-        let location = locationManager.location?.coordinate
-        stop()
-        return location
-    }
 }
 
 

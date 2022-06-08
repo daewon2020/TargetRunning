@@ -9,8 +9,8 @@ import Foundation
 
 struct StartParameters {
     let goal: RunGoal
-    let minutes: Int?
-    let hourse: Int?
-    let kilometers: Int?
-    let meters: Int?
+    let minutes: Int
+    let hourse: Int
+    let kilometers: Int
+    let meters: Int
 }

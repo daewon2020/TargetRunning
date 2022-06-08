@@ -8,13 +8,20 @@
 import UIKit
 
 class CircleProgressBar: UIView {
-    
-    
+
+    var viewModel: CircleProgressBarViewModelProtocol! {
+        didSet {
+            viewModel.progressValue.bind { value in
+                self.setProgressValue(for: value)
+            }
+        }
+    }
+
     private var circleLayer = CAShapeLayer()
     private var progressLayer = CAShapeLayer()
     private var startPoint = CGFloat(-Double.pi / 2)
     private var endPoint = CGFloat(3 * Double.pi / 2)
-    
+        
     override init(frame: CGRect) {
         super.init(frame: frame)
         crateCirclePath()
@@ -26,8 +33,8 @@ class CircleProgressBar: UIView {
     
     func crateCirclePath() {
         let circlePath = UIBezierPath(
-            arcCenter: CGPoint(x: frame.height / 2, y: frame.height / 2),
-            radius: frame.width / 2 - 30,
+            arcCenter: CGPoint(x: frame.width / 2, y: frame.width / 2),
+            radius: frame.width / 2 - 20,
             startAngle: startPoint,
             endAngle: endPoint,
             clockwise: true
@@ -45,14 +52,14 @@ class CircleProgressBar: UIView {
         progressLayer.fillColor = .none
         progressLayer.lineCap = .round
         progressLayer.lineWidth = 13.0
-        progressLayer.strokeEnd = 0.59
+        progressLayer.strokeEnd = 0
         progressLayer.strokeColor = UIColor.green.cgColor
         layer.addSublayer(progressLayer)
     }
     
-    func increaseProgressValue(for value: CGFloat) {
+    private func setProgressValue(for value: Double) {
         UIView.animate(withDuration: 0.4, delay: 0, options: [.allowAnimatedContent]) {
-            self.progressLayer.strokeEnd += value
+            self.progressLayer.strokeEnd = value
         }
     }
 }

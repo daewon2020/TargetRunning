@@ -41,10 +41,22 @@ class TimeManager {
             RunLoop.current.add(timer, forMode: .common)
         }
     }
-    
+
     func stopTimer() {
         timer?.invalidate()
-        timer = nil
+    }
+    
+    func resumeTimer() {
+        timer = Timer.scheduledTimer(
+            timeInterval: 1,
+            target: self,
+            selector: #selector(timerDidChange),
+            userInfo: nil,
+            repeats: true
+        )
+        if let timer = timer {
+            RunLoop.current.add(timer, forMode: .common)
+        }
     }
     
     @objc private func timerDidChange() {

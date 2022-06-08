@@ -31,15 +31,29 @@ protocol CurrentActivityProtocol {
     var activity: Activity? { get }
     var routeCoordinate: RouteCoordinate? { get }
     var lineCoordinates: Box<[CLLocationCoordinate2D]> { get }
+    var startResumeButtonLabel: Box<String> { get }
+    var stepValue: Double { get }
+    var progressValue: Box<Double> { get }
+    var goalLabel: String { get }
+    var currentCounterString: String { get }
+    var timeDistanceString: Box<String> { get }
+    var timeDistanceSubtitle: String { get }
     
-    func startButtonPressed(buttonTitle: (String)->())
     func getMKPolyline(with coordinates: [CLLocationCoordinate2D]) -> MKPolyline
     func clearMapOverlay(action: ()->())
     func setMapCenter(for mapView: MKMapView)
+    func startActivity()
+    func stopResumeButtonPressed()
+    func finishButtonPressed()
     init(startParametes: StartParameters)
 }
 
-class CurrentActivityParametersViewModel: NSObject, CurrentActivityProtocol {
+class CurrentActivityViewModel: NSObject, CurrentActivityProtocol {
+    
+    var stepValue = 0.0
+    var progressValue = Box(value: 0.0)
+    
+    var startResumeButtonLabel = Box(value: "")
     
     var paceSegment: Int {
         get {
@@ -73,6 +87,7 @@ class CurrentActivityParametersViewModel: NSObject, CurrentActivityProtocol {
             : 0
         }
     }
+    
     var avgPaceDistanceString: String {
         getTimeString(from: avgPaceDistance)
     }
@@ -94,44 +109,117 @@ class CurrentActivityParametersViewModel: NSObject, CurrentActivityProtocol {
     var activity: Activity?
     var routeCoordinate: RouteCoordinate?
     var lineCoordinates = Box(value: [CLLocationCoordinate2D]())
+    var goalLabel: String {
+        get {
+            let kilometers = startParameters.kilometers
+            let meters = startParameters.meters
+            let hours = startParameters.hourse
+            let minutes = startParameters.minutes
+            let seconds = hours * 3600 + minutes * 60
+            switch startParameters.goal {
+                case .Distance:
+                    return String(format: "%02i", kilometers) + "," + String(format: "%02i", meters * 10)
+                case .Time:
+                    return getTimeString(from: seconds)
+            }
+        }
+    }
+    
+    var currentCounterString: String {
+        switch startParameters.goal {
+            case .Distance:
+                return distanceString
+            case .Time:
+                return timeString
+        }
+    }
+    
+    var timeDistanceString = Box(value: "00,00")
+    var timeDistanceSubtitle: String {
+        get {
+            switch startParameters.goal {
+                case .Distance:
+                    return "time"
+                case .Time:
+                    return "distance"
+            }
+        }
+    }
+    
     private var context = StorageManager.shared.persistentContainer.viewContext
-    private var timerState = TimerState.Start
+    private var timerState: TimerState {
+        didSet {
+            switch timerState {
+                case .Start:
+                    self.startResumeButtonLabel.value = "Resume"
+                case .Stop:
+                    self.startResumeButtonLabel.value = "Stop"
+            }
+        }
+    }
+    
+    
     private let startParameters: StartParameters!
     
     required init(startParametes: StartParameters) {
         paceDistance = 0
-        self.startParameters = startParametes
+        timerState = .Stop
+        startParameters = startParametes
+
         super.init()
         
         TimeManager.shared.bind { time in
             self.time.value = time
             self.paceTime += 1
             self.addRouteCoordinate()
+            
+            switch self.startParameters.goal {
+                case .Distance:
+                    self.timeDistanceString.value = self.timeString
+                case .Time:
+                    self.progressValue.value += self.stepValue
+            }
         }
         
         LocationManager.shared.bind { currentLocation in
             self.currentLocation = currentLocation
         }
+        stepValue = self.calculateStepValue()
     }
     
-    func startButtonPressed(buttonTitle: (String)->()) {
-        addRouteCoordinate()
+    func startActivity() {
+        //addRouteCoordinate()
+        
+        resetActivityParameters()
+        TimeManager.shared.startTimer()
+        LocationManager.shared.start()
+        createNewActivity()
+        
+        timerState = .Stop
+    }
+    
+    func stopResumeButtonPressed() {
         switch timerState {
             case .Start:
-                resetActivityParameters()
-                TimeManager.shared.startTimer()
+                TimeManager.shared.resumeTimer()
                 LocationManager.shared.start()
-                createNewActivity()
                 
                 timerState = .Stop
             case .Stop:
                 TimeManager.shared.stopTimer()
                 LocationManager.shared.stop()
-                saveActivity()
-                
+                StorageManager.shared.saveContext()
+                previousLocation = nil
                 timerState = .Start
         }
-        buttonTitle("\(timerState)")
+    }
+    
+    func finishButtonPressed() {
+        TimeManager.shared.stopTimer()
+        LocationManager.shared.stop()
+        saveActivity()
+        
+        timerState = .Start
     }
     
     func getMKPolyline(with coordinates: [CLLocationCoordinate2D]) -> MKPolyline {
@@ -143,7 +231,6 @@ class CurrentActivityParametersViewModel: NSObject, CurrentActivityProtocol {
     }
     
     func setMapCenter(for mapView: MKMapView) {
-        //guard let location = LocationManager.shared.getCurrentLocation() else { return }
         guard let location = currentLocation?.coordinate else { return }
             
         let span = MKCoordinateSpan.init(latitudeDelta: 0.0055, longitudeDelta: 0.0055)
@@ -154,7 +241,7 @@ class CurrentActivityParametersViewModel: NSObject, CurrentActivityProtocol {
 
 //MARK: - Private funcs
 
-extension CurrentActivityParametersViewModel {
+extension CurrentActivityViewModel {
     private func saveActivity() {
         if let activity = activity {
             activity.avgPace = Int64(avgPaceDistance)
@@ -200,18 +287,31 @@ extension CurrentActivityParametersViewModel {
     private func calculateDistance() {
         guard let currentLocation = currentLocation else { return }
         if let previousLocation = previousLocation {
+            
             let currentDistance = currentLocation.distance(from: previousLocation)
+            
             distance += currentDistance
             paceDistance += currentDistance
+            
+            switch startParameters.goal {
+                case .Distance:
+                    progressValue.value = distance / 1000
+                case .Time:
+                    timeDistanceString.value = distanceString
+            }
+            
             let startLineCoordinate = CLLocationCoordinate2D(
                 latitude: previousLocation.coordinate.latitude,
                 longitude: previousLocation.coordinate.longitude
             )
+            
             let endLineCoordinate = CLLocationCoordinate2D(
                 latitude: currentLocation.coordinate.latitude,
                 longitude: currentLocation.coordinate.longitude
             )
+            
             lineCoordinates.value = [startLineCoordinate, endLineCoordinate]
+            
             if let activity = activity {
                 activity.distance = distance
             }
@@ -224,6 +324,7 @@ extension CurrentActivityParametersViewModel {
     private func addRouteCoordinate() {
         guard let currentLocation = currentLocation else { return }
         guard let entityDescription = NSEntityDescription.entity(forEntityName: "RouteCoordinate", in: context) else { return }
+        
         if let routeCoordinate = NSManagedObject(entity: entityDescription, insertInto: context) as? RouteCoordinate {
             routeCoordinate.latitude = currentLocation.coordinate.latitude
             routeCoordinate.longitude = currentLocation.coordinate.longitude
@@ -238,7 +339,15 @@ extension CurrentActivityParametersViewModel {
             pace.time = Int64(paceSegment)
             pace.date = Date()
             pace.activity = activity
-            print(pace.time)
+        }
+    }
+    
+    private func calculateStepValue() -> Double {
+        switch startParameters.goal {
+            case .Distance:
+                return 1.0 / Double(startParameters.meters + startParameters.kilometers * 1000)
+            case .Time:
+                return 1.0 / Double(startParameters.hourse * 3600 + startParameters.minutes * 60)
         }
     }
 }

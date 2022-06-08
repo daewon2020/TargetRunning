@@ -20,6 +20,7 @@ protocol StartViewModelProtocol {
     func showTargetList() -> UIAlertController
     func getStartParameters() -> StartParameters
     func setGoalValue(for firstRowIndex: Int, and secondRowIndex: Int, completion: (String) -> ())
+    func startButtonTapped() -> UIAlertController?
 }
 
 class StartViewModel: StartViewModelProtocol {
@@ -84,6 +85,29 @@ class StartViewModel: StartViewModelProtocol {
                 minutes = StartDataManager.shared.timePickerData[1][secondRowIndex]
                 let goalValueString = String(format: "%02i", hours) + ":" + String(format: "%02i", minutes)
                 completion(goalValueString)
+        }
+    }
+    
+    func startButtonTapped() -> UIAlertController? {
+        if !checkGoal() {
+            let alertControler = UIAlertController(
+                title: nil ,
+                message: "Please set goal for your run",
+                preferredStyle: .alert
+            )
+            let action = UIAlertAction(title: "OK", style: .default)
+            alertControler.addAction(action)
+            return alertControler
+        }
+        return nil
+    }
+    
+    private func checkGoal() -> Bool {
+        switch runGoal.value {
+            case .Distance:
+                return kilometers == 0 && meters == 0 ? false : true
+            case .Time:
+                return hours == 0 && minutes == 0 ? false : true
         }
     }
 }

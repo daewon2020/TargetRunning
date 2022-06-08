@@ -10,7 +10,7 @@ import MapKit
 
 class CurrentActivityVC: UIViewController {
 
-    @IBOutlet var mainButton: UIButton!
+    @IBOutlet var goalButton: UIButton!
     @IBOutlet var topLeftButton: UIButton!
     @IBOutlet var topCenterButton: UIButton!
     @IBOutlet var topRightButton: UIButton!
@@ -19,6 +19,8 @@ class CurrentActivityVC: UIViewController {
     @IBOutlet var mapButton: UIButton!
     @IBOutlet var mapView: MKMapView!
     @IBOutlet var stopResumeButton: UIButton!
+    @IBOutlet var goalLabel: UILabel!
+    @IBOutlet var goalStackView: UIStackView!
     
     @IBOutlet var paramViewLeadingConstraint: NSLayoutConstraint!
     @IBOutlet var paramViewTrailingConstraint: NSLayoutConstraint!
@@ -34,10 +36,11 @@ class CurrentActivityVC: UIViewController {
         mapView.delegate = self
         
         setupButtonsUI()
+        createCircleProgressBar()
         
         viewModel.time.bind { _ in
-            self.setTime()
-            self.setDistance()
+            self.setTimeDistance()
+            self.setCounterValue()
             self.setAvgDistancePace()
             self.setSplitPace()
         }
@@ -45,7 +48,17 @@ class CurrentActivityVC: UIViewController {
         viewModel.lineCoordinates.bind { coordinates in
             self.drawRoute(with: coordinates)
         }
-        createCircleProgressBar()
+        
+        viewModel.startResumeButtonLabel.bind { label in
+            self.setStartResumeButtonLabel(label: label)
+        }
+        
+        viewModel.progressValue.bind { value in
+            self.circleProgressBar.viewModel.setProgressValue(value: value)
+        }
+        
+        viewModel.startActivity()
+        goalLabel.text = viewModel.goalLabel
     }
     
     @IBAction func mapButtomTapped(_ sender: Any) {
@@ -96,12 +109,13 @@ class CurrentActivityVC: UIViewController {
         }
     }
     
-    private func setTime() {
-        topLeftButton.setTitle(viewModel.timeString, for: .normal)
+    private func setTimeDistance() {
+        topLeftButton.setTitle(viewModel.timeDistanceString.value, for: .normal)
+        topLeftButton.configuration?.subtitle = viewModel.timeDistanceSubtitle
     }
     
-    private func setDistance() {
-        mainButton.setTitle(viewModel.distanceString, for: .normal)
+    private func setCounterValue() {
+        goalButton.setTitle(viewModel.currentCounterString, for: .normal)
     }
     
     private func setAvgDistancePace() {
@@ -119,20 +133,26 @@ class CurrentActivityVC: UIViewController {
     
     private func createCircleProgressBar() {
         circleProgressBar = CircleProgressBar(
-            frame: CGRect(x: 0, y: 0, width: view.frame.width - 20, height: view.frame.width - 20)
+            frame: CGRect(x: 0, y: 0, width: paramView.frame.width, height: paramView.frame.width)
         )
-        circleProgressBar.center = view.center
-        view.addSubview(circleProgressBar)
+        circleProgressBar.center = goalStackView.center
+        circleProgressBar.viewModel = CircleProgressBarViewModel()
+        paramView.addSubview(circleProgressBar)
+    }
+    
+    private func setStartResumeButtonLabel(label: String) {
+        stopResumeButton.setTitle(label, for: .normal)
     }
     
     @IBAction func finishButtonPressed(_ sender: UIButton) {
-        viewModel.startButtonPressed { title in
-            finishButton.setTitle(title, for: .normal)
-        }
+        viewModel.finishButtonPressed()
+        dismiss(animated: true)
     }
+    
     @IBAction func stopResumeButtonPressed() {
-        circleProgressBar.increaseProgressValue(for: 0.01)
+        viewModel.stopResumeButtonPressed()
     }
+    
 }
 
 //MARK: - MKMapViewDelegate
