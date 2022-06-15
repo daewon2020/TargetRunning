@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import CoreLocation
 
 protocol StartViewModelProtocol {
     var distancePickerData: [[Int]] { get }
@@ -16,21 +17,64 @@ protocol StartViewModelProtocol {
     var hours: Int { get }
     var kilometers: Int { get }
     var meters: Int { get }
+    var weather: Box<Weather> { get }
+    var temperature: String { get }
+    var weatherDescription: String { get }
+    var weatherIcon: Box<UIImage> { get }
+    var getLocation: Bool { get }
+    var currentLocation: CLLocation? { get }
     
     func showTargetList() -> UIAlertController
     func getStartParameters() -> StartParameters
     func setGoalValue(for firstRowIndex: Int, and secondRowIndex: Int, completion: (String) -> ())
     func startButtonTapped() -> UIAlertController?
+    func getWeatherData()
+    init()
+    
 }
 
 class StartViewModel: StartViewModelProtocol {
-    
+
     var minutes = 0
     var hours = 0
     var kilometers = 0
     var meters = 0
     var runGoal = Box(value: StartDataManager.shared.runGoal)
+    var weather: Box<Weather>  = Box(value: Weather.init(weather: nil, main: nil))
+    var weatherIcon: Box<UIImage> = Box(value: UIImage())
+    var getLocation = false
+    var currentLocation: CLLocation? = nil {
+        didSet {
+            if !getLocation && currentLocation != nil {
+                getWeatherData()
+            }
+        }
+    }
     
+    
+
+    var temperature: String {
+        get {
+            if let temperature = weather.value.main?.temp {
+                return String(format: "%0.1f", temperature) + " C"
+            }
+            else {
+                return ""
+            }
+        }
+    }
+    
+    var weatherDescription: String {
+        get {
+            if let temperature = weather.value.weather?.first?.description {
+                return temperature
+            }
+            else {
+                return ""
+            }
+        }
+    }
+
     var distancePickerData: [[Int]] {
         get {
             StartDataManager.shared.distancePickerData
@@ -39,6 +83,12 @@ class StartViewModel: StartViewModelProtocol {
     var timePickerData: [[Int]] {
         get {
             StartDataManager.shared.timePickerData
+        }
+    }
+    
+    required init() {
+        LocationManager.shared.bind { currentLocation in
+            self.currentLocation = currentLocation
         }
     }
     
@@ -100,6 +150,36 @@ class StartViewModel: StartViewModelProtocol {
             return alertControler
         }
         return nil
+    }
+    
+    func getWeatherData() {
+                
+                getLocation = true
+                
+                let lon = currentLocation!.coordinate.longitude
+                let lat = currentLocation!.coordinate.latitude
+                
+                NetworkManager.shared.fetchWeatherData(lon: lon , lat: lat) { result in
+                    switch result {
+                        case .success(let weather):
+                            self.weather.value = weather
+                            
+                            if let iconName = weather.weather?.first?.icon {
+                                NetworkManager.shared.fetchWeatherIcon(iconName: iconName) { data in
+                                    if let image = UIImage(data: data) {
+                                        self.weatherIcon.value = image
+                                    } else {
+                                        self.weatherIcon.value = UIImage(systemName: "icloud.slash")!
+                                    }
+                                }
+                            }
+                            
+                        case .failure( let error):
+                            print(error.localizedDescription)
+                    }
+                }
+        //LocationManager.shared.stop()
+
     }
     
     private func checkGoal() -> Bool {

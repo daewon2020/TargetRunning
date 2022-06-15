@@ -184,6 +184,7 @@ class CurrentActivityViewModel: NSObject, CurrentActivityProtocol {
         LocationManager.shared.bind { currentLocation in
             self.currentLocation = currentLocation
         }
+        
         stepValue = self.calculateStepValue()
     }
     

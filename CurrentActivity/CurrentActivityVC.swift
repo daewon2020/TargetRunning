@@ -61,6 +61,7 @@ class CurrentActivityVC: UIViewController {
         goalLabel.text = viewModel.goalLabel
     }
     
+    
     @IBAction func mapButtomTapped(_ sender: Any) {
         if isAnimated {
             return
@@ -74,6 +75,7 @@ class CurrentActivityVC: UIViewController {
             paramViewTrailingConstraint.constant -= paramView.frame.width
             viewModel.setMapCenter(for: mapView)
         }
+        
         UIView.animate(withDuration: 0.4, delay: 0, options: [.allowAnimatedContent]) {
             self.view.layoutIfNeeded()
         } completion: { _ in
@@ -133,9 +135,19 @@ class CurrentActivityVC: UIViewController {
     
     private func createCircleProgressBar() {
         circleProgressBar = CircleProgressBar(
-            frame: CGRect(x: 0, y: 0, width: paramView.frame.width, height: paramView.frame.width)
+            frame: CGRect(
+                x: 0,
+                y: 0,
+                width: paramView.frame.width,
+                height: paramView.frame.width
+            )
         )
-        circleProgressBar.center = goalStackView.center
+        
+        circleProgressBar.center = CGPoint(
+            x: paramView.frame.width / 2,
+            y: paramView.frame.height / 2
+        )
+        
         circleProgressBar.viewModel = CircleProgressBarViewModel()
         paramView.addSubview(circleProgressBar)
     }

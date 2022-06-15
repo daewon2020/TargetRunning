@@ -11,6 +11,9 @@ class StartVC: UIViewController {
 
     @IBOutlet var goalTextField: UITextField!
     @IBOutlet var goalValueButton: UIButton!
+    @IBOutlet var weatherIcon: UIImageView!
+    @IBOutlet var tempetatureLabel: UILabel!
+    @IBOutlet var weatherDescriptionLabel: UILabel!
     
     lazy var startButton: UIButton = {
         let startButton = UIButton()
@@ -91,6 +94,14 @@ class StartVC: UIViewController {
             }
         }
         
+        viewModel.weather.bind { weather in
+            self.setWeatherData(with: weather)
+        }
+        
+        viewModel.weatherIcon.bind { image in
+            self.setWeatherIcon(with: image)
+        }
+        
         goalValueButton.configuration?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer({ inConf in
             var outConf = inConf
             outConf.font = UIFont.systemFont(ofSize: 70)
@@ -111,10 +122,16 @@ class StartVC: UIViewController {
     
     @IBAction func goalValueButtonTapped(_ sender: Any) {
         goalTextField.becomeFirstResponder()
+        viewModel.getWeatherData()
     }
     
-    private func fetchData() {
-        
+    private func setWeatherData(with weather: Weather) {
+        weatherDescriptionLabel.text = viewModel.weatherDescription
+        tempetatureLabel.text = viewModel.temperature
+    }
+    
+    private func setWeatherIcon(with image: UIImage) {
+        weatherIcon.image = image
     }
     
     private func setConstraints() {

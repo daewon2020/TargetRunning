@@ -33,7 +33,7 @@ class CircleProgressBar: UIView {
     
     func crateCirclePath() {
         let circlePath = UIBezierPath(
-            arcCenter: CGPoint(x: frame.width / 2, y: frame.width / 2),
+            arcCenter: CGPoint(x: frame.width / 2, y: frame.height / 2),
             radius: frame.width / 2 - 20,
             startAngle: startPoint,
             endAngle: endPoint,
@@ -55,6 +55,7 @@ class CircleProgressBar: UIView {
         progressLayer.strokeEnd = 0
         progressLayer.strokeColor = UIColor.green.cgColor
         layer.addSublayer(progressLayer)
+        
     }
     
     private func setProgressValue(for value: Double) {
