@@ -8,9 +8,10 @@
 import Foundation
 import CoreLocation
 
-class LocationManager: NSObject, CLLocationManagerDelegate {
+class LocationManager: NSObject {
     static var shared = LocationManager()
     typealias Listener = (CLLocation?) -> Void
+    
     private var listenerLocation: Listener?
     private var listenerRoughLocation: Listener?
     
@@ -28,20 +29,14 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     
     private var locationManager =  CLLocationManager()
     
-    override init() {
+    private override init() {
         super.init()
+        
         locationManager.activityType = .fitness
         locationManager.distanceFilter = 5
         locationManager.allowsBackgroundLocationUpdates = true
         locationManager.pausesLocationUpdatesAutomatically = false
         locationManager.delegate = self
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = locations.last else { return }
-        roughLocation = location
-        guard location.horizontalAccuracy < 20 else { return }
-        currentLocation = location
     }
     
     func start() {
@@ -61,6 +56,15 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     func bindRoughLocation(listener: @escaping Listener) {
         self.listenerRoughLocation = listener
         listener(roughLocation)
+    }
+}
+
+extension LocationManager: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = locations.last else { return }
+        roughLocation = location
+        guard location.horizontalAccuracy < 20 else { return }
+        currentLocation = location
     }
 }
 
