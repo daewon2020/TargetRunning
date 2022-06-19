@@ -14,65 +14,43 @@ class StartVC: UIViewController {
     @IBOutlet var weatherIcon: UIImageView!
     @IBOutlet var tempetatureLabel: UILabel!
     @IBOutlet var weatherDescriptionLabel: UILabel!
-    
-    lazy var startButton: UIButton = {
-        let startButton = UIButton()
-        let buttonConfiguratin = startButton.configuration
-        let buttonSide = 80.0
-        startButton.heightAnchor.constraint(equalToConstant: buttonSide).isActive = true
-        startButton.widthAnchor.constraint(equalToConstant: buttonSide).isActive = true
-        startButton.layer.cornerRadius = buttonSide / 2
-        startButton.setTitle("Start", for: .normal)
-        
-        startButton.layer.backgroundColor = UIColor.brown.cgColor
-        startButton.layer.shadowColor = UIColor.black.cgColor
-        startButton.layer.shadowOpacity = 0.7
-        startButton.layer.shadowOffset = CGSize(width: 0.0, height: 3)
-        startButton.translatesAutoresizingMaskIntoConstraints = false
-        startButton.addTarget(self, action: #selector(startButtonTapped), for: .touchUpInside)
-        return startButton
-    }()
-    
-    lazy var goalButton: UIButton = {
-        let startButton = UIButton()
-        let buttonConfiguratin = startButton.configuration
-        startButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        startButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
-        startButton.layer.cornerRadius = 8
-        startButton.setTitle("set goal", for: .normal)
-        
-        startButton.layer.backgroundColor = UIColor.brown.cgColor
-
-        startButton.translatesAutoresizingMaskIntoConstraints = false
-        startButton.addTarget(self, action: #selector(goalButtonTapped), for: .touchUpInside)
-        return startButton
-    }()
+    @IBOutlet var locationName: UILabel!
+    @IBOutlet var loadingIndicator: UIActivityIndicatorView!
+    @IBOutlet var weatherStackView: UIStackView!
+    @IBOutlet var startButton: UIButton!
+    @IBOutlet var goalButton: UIButton!
     
     lazy var toolBar: UIToolbar = {
         let toolBar = UIToolbar()
+        
         toolBar.barStyle = .default
         toolBar.isTranslucent = true
         toolBar.sizeToFit()
-        toolBar.tintColor = .black
+        
         let cancelButton = UIBarButtonItem(
             title: "Cancel",
             style: .done,
             target: self,
             action: #selector(cancelTabBarButtonTapped)
         )
+        
         let space = UIBarButtonItem(systemItem: .flexibleSpace)
+        
         let setButton = UIBarButtonItem(
             title: "Set",
             style: .done,
             target: self,
             action: #selector(setTabBarButtonTapped)
         )
+        
         toolBar.setItems([cancelButton,space,setButton], animated: true)
+        
         return toolBar
     }()
     
     lazy var goalPickerView: UIPickerView = {
         let goalPickerView = UIPickerView()
+        
         return goalPickerView
     }()
     
@@ -80,17 +58,19 @@ class StartVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        loadingIndicator.startAnimating()
+        
         viewModel = StartViewModel()
         viewModel.runGoal.bind { runGoal in
             switch self.viewModel.runGoal.value {
                 case .Distance:
-                    self.goalValueButton.setTitle("00,00", for: .normal)
+                    self.goalValueButton.setTitle("00,0", for: .normal)
                     self.goalValueButton.configuration?.subtitle = "kilometers"
-                    self.goalButton.setTitle("distance", for: .normal)
+                    self.goalButton.setTitle("Distance", for: .normal)
                 case .Time:
                     self.goalValueButton.setTitle("00:00", for: .normal)
                     self.goalValueButton.configuration?.subtitle = "hourse:minutes"
-                    self.goalButton.setTitle("time", for: .normal)
+                    self.goalButton.setTitle("Time", for: .normal)
             }
         }
         
@@ -99,6 +79,7 @@ class StartVC: UIViewController {
         }
         
         viewModel.weatherIcon.bind { image in
+            guard let image = image else { return }
             self.setWeatherIcon(with: image)
         }
         
@@ -117,48 +98,22 @@ class StartVC: UIViewController {
         view.addSubview(startButton)
         view.addSubview(goalButton)
         
-        setConstraints()
     }
     
     @IBAction func goalValueButtonTapped(_ sender: Any) {
         goalTextField.becomeFirstResponder()
-        viewModel.getWeatherData()
     }
-    
+
     private func setWeatherData(with weather: Weather) {
         weatherDescriptionLabel.text = viewModel.weatherDescription
         tempetatureLabel.text = viewModel.temperature
+        locationName.text = viewModel.weatherLocationName
     }
     
     private func setWeatherIcon(with image: UIImage) {
         weatherIcon.image = image
-    }
-    
-    private func setConstraints() {
-        NSLayoutConstraint.activate(
-            [
-                startButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                startButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
-                goalButton.bottomAnchor.constraint(equalTo: startButton.topAnchor, constant: -20),
-                goalButton.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-            ]
-        )
-    }
-    
-    @objc private func goalButtonTapped(){
-        goalPickerView.selectRow(0, inComponent: 0, animated: true)
-        goalPickerView.selectRow(0, inComponent: 1, animated: true)
-        present(viewModel.showTargetList(), animated: true)
-    }
-    
-    @objc private func startButtonTapped() {
-        if let wrongGoalAlert = viewModel.startButtonTapped() {
-            present(wrongGoalAlert, animated: true)
-        }
-        guard let vc = storyboard?.instantiateViewController(withIdentifier: "currentActivity") as? CurrentActivityVC else { return }
-        vc.modalPresentationStyle = .fullScreen
-        vc.viewModel =  CurrentActivityViewModel(startParametes: viewModel.getStartParameters())
-        present(vc, animated: true)
+        loadingIndicator.stopAnimating()
+        weatherStackView.isHidden = false
     }
     
     @objc private func setTabBarButtonTapped() {
@@ -175,6 +130,24 @@ class StartVC: UIViewController {
     @objc private func cancelTabBarButtonTapped() {
         goalTextField.resignFirstResponder()
     }
+    
+    @IBAction func startButtonTapped() {
+        if let wrongGoalAlert = viewModel.startButtonTapped() {
+            present(wrongGoalAlert, animated: true)
+        }
+        guard let vc = storyboard?.instantiateViewController(withIdentifier: "currentActivity") as? CurrentActivityVC else { return }
+        vc.modalPresentationStyle = .fullScreen
+        vc.viewModel =  CurrentActivityViewModel(startParametes: viewModel.getStartParameters())
+        present(vc, animated: true)
+    }
+    
+    @IBAction func goalButtonTapped() {
+        goalPickerView.selectRow(0, inComponent: 0, animated: true)
+        goalPickerView.selectRow(0, inComponent: 1, animated: true)
+        present(viewModel.showTargetList(), animated: true)
+    }
+    
+    
 }
 
 // MARK: - DatePicker Delegate and DataSource
@@ -202,7 +175,7 @@ extension StartVC: UIPickerViewDataSource, UIPickerViewDelegate {
             case .Distance:
                 switch component {
                     case 0: return "\(viewModel.distancePickerData[component][row]) km"
-                    case 1: return "\(viewModel.distancePickerData[component][row] * 100) m"
+                    case 1: return "\(viewModel.distancePickerData[component][row]) m"
                     default: return nil
                 }
             case .Time:

@@ -11,11 +11,18 @@ import CoreLocation
 class LocationManager: NSObject, CLLocationManagerDelegate {
     static var shared = LocationManager()
     typealias Listener = (CLLocation?) -> Void
-    private var listener: Listener?
+    private var listenerLocation: Listener?
+    private var listenerRoughLocation: Listener?
     
     var currentLocation: CLLocation? {
         didSet {
-            listener?(currentLocation)
+            listenerLocation?(currentLocation)
+        }
+    }
+    
+    var roughLocation: CLLocation? {
+        didSet {
+            listenerRoughLocation?(roughLocation)
         }
     }
     
@@ -31,13 +38,10 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        for newLocation in locations {
-            let howRecent = newLocation.timestamp.timeIntervalSinceNow
-            guard newLocation.horizontalAccuracy < 20 && abs(howRecent) < 10 else { continue }
-            
-            guard let location = locations.last else { return }
-            currentLocation = location
-        }
+        guard let location = locations.last else { return }
+        roughLocation = location
+        guard location.horizontalAccuracy < 20 else { return }
+        currentLocation = location
     }
     
     func start() {
@@ -49,9 +53,14 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         locationManager.stopUpdatingLocation()
     }
     
-    func bind(listener: @escaping Listener) {
-        self.listener = listener
+    func bindLocation(listener: @escaping Listener) {
+        self.listenerLocation = listener
         listener(currentLocation)
+    }
+    
+    func bindRoughLocation(listener: @escaping Listener) {
+        self.listenerRoughLocation = listener
+        listener(roughLocation)
     }
 }
 

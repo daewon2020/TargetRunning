@@ -76,8 +76,6 @@
 			isa = PBXGroup;
 			children = (
 				22B4FDE828412A9E0045BCE4 /* TargetRunning.xcdatamodeld */,
-				22B7E23D28469635007FF7AD /* StartVC */,
-				22A92FAA283BF1FA00E242C9 /* CurrentActivity */,
 				228BBC072837D5AF002AD32B /* TargetRunning */,
 				228BBC062837D5AF002AD32B /* Products */,
 				228BBC1F2837DB90002AD32B /* Frameworks */,
@@ -95,6 +93,8 @@
 		228BBC072837D5AF002AD32B /* TargetRunning */ = {
 			isa = PBXGroup;
 			children = (
+				22B7E23D28469635007FF7AD /* StartVC */,
+				22A92FAA283BF1FA00E242C9 /* CurrentActivity */,
 				22B4FDD8284106C80045BCE4 /* Activity */,
 				22A92FA7283BEF5500E242C9 /* Service Layer */,
 				22D2A2FA283E4D25004322E5 /* App */,

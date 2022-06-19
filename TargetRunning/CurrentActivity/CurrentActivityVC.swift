@@ -34,8 +34,7 @@ class CurrentActivityVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         mapView.delegate = self
-        
-        setupButtonsUI()
+       
         createCircleProgressBar()
         
         viewModel.time.bind { _ in
@@ -49,18 +48,21 @@ class CurrentActivityVC: UIViewController {
             self.drawRoute(with: coordinates)
         }
         
-        viewModel.startResumeButtonLabel.bind { label in
-            self.setStartResumeButtonLabel(label: label)
+        viewModel.startResumeButtonImage.bind { image in
+            self.setStartResumeButtonImage(image: image)
         }
         
         viewModel.progressValue.bind { value in
             self.circleProgressBar.viewModel.setProgressValue(value: value)
         }
         
+        viewModel.goalLabelColor.bind { color in
+            self.goalLabel.textColor = color
+        }
+        
         viewModel.startActivity()
         goalLabel.text = viewModel.goalLabel
     }
-    
     
     @IBAction func mapButtomTapped(_ sender: Any) {
         if isAnimated {
@@ -79,37 +81,16 @@ class CurrentActivityVC: UIViewController {
         UIView.animate(withDuration: 0.4, delay: 0, options: [.allowAnimatedContent]) {
             self.view.layoutIfNeeded()
         } completion: { _ in
+            if self.paramIsHide {
+                self.mapButton.setImage(UIImage(systemName: "mappin.and.ellipse"), for: .normal)
+            } else {
+                self.mapButton.setImage(UIImage(systemName: "arrow.right"), for: .normal)
+            }
             self.paramIsHide.toggle()
             self.isAnimated = false
         }
     }
     
-    private func setupButtonsUI() {
-        
-        finishButton.layer.cornerRadius = finishButton.frame.height / 2
-        finishButton.layer.backgroundColor = UIColor.brown.cgColor
-        finishButton.layer.shadowColor = UIColor.black.cgColor
-        finishButton.layer.shadowOpacity = 0.7
-        finishButton.layer.shadowOffset = CGSize(width: 0.0, height: 3)
-        
-        stopResumeButton.layer.cornerRadius = finishButton.frame.height / 2
-        stopResumeButton.layer.backgroundColor = UIColor.brown.cgColor
-        stopResumeButton.layer.shadowColor = UIColor.black.cgColor
-        stopResumeButton.layer.shadowOpacity = 0.7
-        stopResumeButton.layer.shadowOffset = CGSize(width: 0.0, height: 3)
-        
-        mapButton.layer.cornerRadius = mapButton.frame.height / 2
-        mapButton.layer.backgroundColor = UIColor.brown.cgColor
-        mapButton.layer.shadowColor = UIColor.black.cgColor
-        mapButton.layer.shadowOpacity = 0.7
-        mapButton.layer.shadowOffset = CGSize(width: 0.0, height: 3)
-        
-        if !paramIsHide {
-            mapButton.tintColor = .lightGray
-        } else {
-            mapButton.tintColor = .systemBlue
-        }
-    }
     
     private func setTimeDistance() {
         topLeftButton.setTitle(viewModel.timeDistanceString.value, for: .normal)
@@ -138,22 +119,21 @@ class CurrentActivityVC: UIViewController {
             frame: CGRect(
                 x: 0,
                 y: 0,
-                width: paramView.frame.width,
-                height: paramView.frame.width
+                width: view.frame.width,
+                height: view.frame.width
             )
         )
         
         circleProgressBar.center = CGPoint(
-            x: paramView.frame.width / 2,
-            y: paramView.frame.height / 2
+            x: view.frame.width / 2,
+            y: view.frame.height / 2
         )
-        
         circleProgressBar.viewModel = CircleProgressBarViewModel()
         paramView.addSubview(circleProgressBar)
     }
     
-    private func setStartResumeButtonLabel(label: String) {
-        stopResumeButton.setTitle(label, for: .normal)
+    private func setStartResumeButtonImage(image: UIImage?) {
+        stopResumeButton.setImage(image, for: .normal)
     }
     
     @IBAction func finishButtonPressed(_ sender: UIButton) {

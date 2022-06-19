@@ -31,16 +31,16 @@ protocol CurrentActivityProtocol {
     var activity: Activity? { get }
     var routeCoordinate: RouteCoordinate? { get }
     var lineCoordinates: Box<[CLLocationCoordinate2D]> { get }
-    var startResumeButtonLabel: Box<String> { get }
+    var startResumeButtonImage: Box<UIImage?> { get }
     var stepValue: Double { get }
     var progressValue: Box<Double> { get }
     var goalLabel: String { get }
+    var goalLabelColor: Box<UIColor> { get }
     var currentCounterString: String { get }
     var timeDistanceString: Box<String> { get }
     var timeDistanceSubtitle: String { get }
     
     func getMKPolyline(with coordinates: [CLLocationCoordinate2D]) -> MKPolyline
-    func clearMapOverlay(action: ()->())
     func setMapCenter(for mapView: MKMapView)
     func startActivity()
     func stopResumeButtonPressed()
@@ -50,10 +50,11 @@ protocol CurrentActivityProtocol {
 
 class CurrentActivityViewModel: NSObject, CurrentActivityProtocol {
     
+    
     var stepValue = 0.0
     var progressValue = Box(value: 0.0)
     
-    var startResumeButtonLabel = Box(value: "")
+    var startResumeButtonImage = Box(value: UIImage(systemName: "stop.fill"))
     
     var paceSegment: Int {
         get {
@@ -109,6 +110,8 @@ class CurrentActivityViewModel: NSObject, CurrentActivityProtocol {
     var activity: Activity?
     var routeCoordinate: RouteCoordinate?
     var lineCoordinates = Box(value: [CLLocationCoordinate2D]())
+    
+    var goalLabelColor = Box(value: UIColor.black)
     var goalLabel: String {
         get {
             let kilometers = startParameters.kilometers
@@ -118,7 +121,7 @@ class CurrentActivityViewModel: NSObject, CurrentActivityProtocol {
             let seconds = hours * 3600 + minutes * 60
             switch startParameters.goal {
                 case .Distance:
-                    return String(format: "%02i", kilometers) + "," + String(format: "%02i", meters * 10)
+                    return "\(kilometers),\(meters / 100) km"
                 case .Time:
                     return getTimeString(from: seconds)
             }
@@ -151,13 +154,18 @@ class CurrentActivityViewModel: NSObject, CurrentActivityProtocol {
         didSet {
             switch timerState {
                 case .Start:
-                    self.startResumeButtonLabel.value = "Resume"
+                    self.startResumeButtonImage.value = UIImage(systemName: "play.fill")
                 case .Stop:
-                    self.startResumeButtonLabel.value = "Stop"
+                    self.startResumeButtonImage.value = UIImage(systemName: "stop.fill")
             }
         }
     }
     
+    private var distanceGoal: Int {
+        get {
+            startParameters.kilometers * 1000 + startParameters.meters
+        }
+    }
     
     private let startParameters: StartParameters!
     
@@ -181,7 +189,7 @@ class CurrentActivityViewModel: NSObject, CurrentActivityProtocol {
             }
         }
         
-        LocationManager.shared.bind { currentLocation in
+        LocationManager.shared.bindLocation { currentLocation in
             self.currentLocation = currentLocation
         }
         
@@ -189,7 +197,7 @@ class CurrentActivityViewModel: NSObject, CurrentActivityProtocol {
     }
     
     func startActivity() {
-        //addRouteCoordinate()
+        addRouteCoordinate()
         
         resetActivityParameters()
         TimeManager.shared.startTimer()
@@ -227,9 +235,6 @@ class CurrentActivityViewModel: NSObject, CurrentActivityProtocol {
         MKPolyline(coordinates: coordinates, count: coordinates.count)
     }
     
-    func clearMapOverlay(action: ()->()) {
-        action()
-    }
     
     func setMapCenter(for mapView: MKMapView) {
         guard let location = currentLocation?.coordinate else { return }
@@ -264,7 +269,7 @@ extension CurrentActivityViewModel {
         paceTime = 0
         paceDistance = 0
         previousLocation = nil
-        currentLocation = nil
+        //currentLocation = nil
         lineCoordinates.value = [CLLocationCoordinate2D]()
     }
     
@@ -296,7 +301,13 @@ extension CurrentActivityViewModel {
             
             switch startParameters.goal {
                 case .Distance:
-                    progressValue.value = distance / 1000
+                    if progressValue.value < 1 {
+                        progressValue.value = distance / Double(distanceGoal)
+                    } else {
+                        if goalLabelColor.value != UIColor.systemGreen {
+                            goalLabelColor.value = UIColor.systemGreen
+                        }
+                    }   
                 case .Time:
                     timeDistanceString.value = distanceString
             }
@@ -324,6 +335,9 @@ extension CurrentActivityViewModel {
     
     private func addRouteCoordinate() {
         guard let currentLocation = currentLocation else { return }
+        if previousLocation == currentLocation {
+            return
+        }
         guard let entityDescription = NSEntityDescription.entity(forEntityName: "RouteCoordinate", in: context) else { return }
         
         if let routeCoordinate = NSManagedObject(entity: entityDescription, insertInto: context) as? RouteCoordinate {
