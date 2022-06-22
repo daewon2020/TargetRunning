@@ -16,6 +16,8 @@ class HeartRateManager: NSObject {
     private var centralManager: CBCentralManager!
     private var heartRatePeripheral: CBPeripheral!
     private let heartRateServiceCBUUID = CBUUID(string: "0x180D")
+    private let heartRateMeasurementCharacteristicCBUUID = CBUUID(string: "2A37")
+
     
     var currentHeartRate: Int? {
         didSet {
@@ -32,6 +34,18 @@ class HeartRateManager: NSObject {
     func bindBPM(listener: @escaping Listener) {
         self.listenerBPM = listener
         listener(currentHeartRate)
+    }
+    
+    private func heartRate(from characteristic: CBCharacteristic) -> Int {
+        guard let characteristicData = characteristic.value else { return -1 }
+        let byteArray = [UInt8](characteristicData)
+        
+        let firstBitValue = byteArray[0] & 0x01
+        if firstBitValue == 0 {
+            return Int(byteArray[1])
+        } else {
+            return (Int(byteArray[1]) << 8) + Int(byteArray[2])
+        }
     }
 }
 
@@ -80,7 +94,19 @@ extension HeartRateManager: CBPeripheralDelegate {
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
         guard let characteristics = service.characteristics else { return }
         for characteristic in characteristics {
-            print(characteristic)
+            if characteristic.properties.contains(.read) {
+                peripheral.readValue(for: characteristic)
+            }
+            
+            if characteristic.properties.contains(.notify) {
+                peripheral.setNotifyValue(true, for: characteristic)
+            }
+        }
+    }
+    
+    func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
+        if characteristic.uuid == heartRateMeasurementCharacteristicCBUUID {
+            currentHeartRate = heartRate(from: characteristic)
         }
     }
 }

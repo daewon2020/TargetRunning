@@ -39,6 +39,7 @@ protocol CurrentActivityProtocol {
     var currentCounterString: String { get }
     var timeDistanceString: Box<String> { get }
     var timeDistanceSubtitle: String { get }
+    var heartRate: Int { get }
     
     func getMKPolyline(with coordinates: [CLLocationCoordinate2D]) -> MKPolyline
     func setMapCenter(for mapView: MKMapView)
@@ -50,7 +51,7 @@ protocol CurrentActivityProtocol {
 
 class CurrentActivityViewModel: NSObject, CurrentActivityProtocol {
     
-    
+    var heartRate = 0
     var stepValue = 0.0
     var progressValue = Box(value: 0.0)
     
@@ -191,6 +192,12 @@ class CurrentActivityViewModel: NSObject, CurrentActivityProtocol {
         
         LocationManager.shared.bindLocation { currentLocation in
             self.currentLocation = currentLocation
+        }
+        
+        HeartRateManager.shared.bindBPM { heartRate in
+            if let heartRate = heartRate {
+                self.heartRate = heartRate
+            }
         }
         
         stepValue = self.calculateStepValue()
