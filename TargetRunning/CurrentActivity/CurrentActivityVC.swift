@@ -21,6 +21,7 @@ class CurrentActivityVC: UIViewController {
     @IBOutlet var stopResumeButton: UIButton!
     @IBOutlet var goalLabel: UILabel!
     @IBOutlet var goalStackView: UIStackView!
+    @IBOutlet var heartRateLabel: UILabel!
     
     @IBOutlet var paramViewLeadingConstraint: NSLayoutConstraint!
     @IBOutlet var paramViewTrailingConstraint: NSLayoutConstraint!
@@ -42,6 +43,7 @@ class CurrentActivityVC: UIViewController {
             self.setCounterValue()
             self.setAvgDistancePace()
             self.setSplitPace()
+            self.setHeartRate()
         }
         
         viewModel.lineCoordinates.bind { coordinates in
@@ -84,7 +86,7 @@ class CurrentActivityVC: UIViewController {
             if self.paramIsHide {
                 self.mapButton.setImage(UIImage(systemName: "mappin.and.ellipse"), for: .normal)
             } else {
-                self.mapButton.setImage(UIImage(systemName: "arrow.right"), for: .normal)
+                self.mapButton.setImage(UIImage(systemName: "xmark"), for: .normal)
             }
             self.paramIsHide.toggle()
             self.isAnimated = false
@@ -107,6 +109,10 @@ class CurrentActivityVC: UIViewController {
     
     private func setSplitPace() {
         topRightButton.setTitle(viewModel.paceSegmentString, for: .normal)
+    }
+    
+    private func setHeartRate() {
+        heartRateLabel.text = "\(viewModel.heartRate)"
     }
     
     private func drawRoute(with coordinates: [CLLocationCoordinate2D]) { 

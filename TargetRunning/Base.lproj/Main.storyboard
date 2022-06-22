@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="290-9q-lM8">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21179.7" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="290-9q-lM8">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21169.4"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -37,7 +38,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="activityCell" id="pto-D2-JYD">
-                                <rect key="frame" x="0.0" y="44.5" width="375" height="43.5"/>
+                                <rect key="frame" x="0.0" y="50" width="375" height="43.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="pto-D2-JYD" id="aVo-Y4-Yg0">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -118,7 +119,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3jb-H6-sLA">
-                                <rect key="frame" x="0.0" y="286" width="375" height="95.5"/>
+                                <rect key="frame" x="0.0" y="285" width="375" height="97"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="55"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="Button">
@@ -402,6 +403,12 @@
                                             <color key="baseBackgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </buttonConfiguration>
                                     </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gfx-UL-qtJ">
+                                        <rect key="frame" x="167" y="235" width="41.5" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
@@ -410,10 +417,12 @@
                                     <constraint firstAttribute="trailing" secondItem="dfn-YZ-fN2" secondAttribute="trailing" constant="20" id="Bde-Ts-gTU"/>
                                     <constraint firstItem="KJv-j4-lSz" firstAttribute="centerX" secondItem="E54-57-0ql" secondAttribute="centerX" id="H8d-Ot-wcJ"/>
                                     <constraint firstItem="KJv-j4-lSz" firstAttribute="leading" secondItem="Hbt-AZ-NwT" secondAttribute="trailing" constant="5" id="NyE-I7-FGx"/>
+                                    <constraint firstItem="lWt-bT-5vv" firstAttribute="top" secondItem="gfx-UL-qtJ" secondAttribute="bottom" constant="5" id="R7G-p3-Lae"/>
                                     <constraint firstAttribute="bottom" secondItem="QdP-3f-88p" secondAttribute="bottom" constant="60" id="RXP-2a-Nyu"/>
                                     <constraint firstItem="LzD-fs-89Q" firstAttribute="leading" secondItem="ebF-72-APW" secondAttribute="trailing" id="TTH-kB-3Wr"/>
                                     <constraint firstAttribute="bottom" secondItem="KJv-j4-lSz" secondAttribute="bottom" constant="50" id="VUK-vd-BDH"/>
                                     <constraint firstItem="dfn-YZ-fN2" firstAttribute="centerX" secondItem="E54-57-0ql" secondAttribute="centerX" id="Vsm-rc-H79"/>
+                                    <constraint firstItem="gfx-UL-qtJ" firstAttribute="centerX" secondItem="E54-57-0ql" secondAttribute="centerX" id="Wgc-NO-oHb"/>
                                     <constraint firstItem="QdP-3f-88p" firstAttribute="leading" secondItem="KJv-j4-lSz" secondAttribute="trailing" constant="5" id="Z2v-sj-dC3"/>
                                     <constraint firstItem="dfn-YZ-fN2" firstAttribute="leading" secondItem="E54-57-0ql" secondAttribute="leading" constant="20" id="ZVD-Id-wjw"/>
                                     <constraint firstItem="dfn-YZ-fN2" firstAttribute="centerY" secondItem="E54-57-0ql" secondAttribute="centerY" id="cSG-fX-EkI"/>
@@ -464,6 +473,7 @@
                         <outlet property="goalButton" destination="lWt-bT-5vv" id="ZEd-3h-mao"/>
                         <outlet property="goalLabel" destination="tMl-MH-YDw" id="Lfp-F2-So4"/>
                         <outlet property="goalStackView" destination="dfn-YZ-fN2" id="nuZ-5y-pP7"/>
+                        <outlet property="heartRateLabel" destination="gfx-UL-qtJ" id="pl4-S5-S8g"/>
                         <outlet property="mapButton" destination="U7u-oX-ptt" id="wto-QE-Xff"/>
                         <outlet property="mapView" destination="AOq-ld-Whj" id="UzG-ne-2eX"/>
                         <outlet property="paramView" destination="E54-57-0ql" id="jfD-aI-Ift"/>
@@ -481,15 +491,15 @@
         </scene>
     </scenes>
     <resources>
-        <image name="arrowshape.zigzag.forward" catalog="system" width="128" height="93"/>
+        <image name="arrowshape.zigzag.forward" catalog="system" width="128" height="92"/>
         <image name="list.bullet.rectangle.portrait" catalog="system" width="115" height="128"/>
         <image name="map.fill" catalog="system" width="128" height="110"/>
-        <image name="mappin.and.ellipse" catalog="system" width="118" height="128"/>
+        <image name="mappin.and.ellipse" catalog="system" width="117" height="128"/>
         <image name="stop.fill" catalog="system" width="128" height="113"/>
         <image name="timer.square" catalog="system" width="128" height="114"/>
-        <image name="trash" catalog="system" width="121" height="128"/>
+        <image name="trash" catalog="system" width="117" height="128"/>
         <systemColor name="labelColor">
-            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="linkColor">
             <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

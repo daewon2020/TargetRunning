@@ -342,9 +342,7 @@ extension CurrentActivityViewModel {
     
     private func addRouteCoordinate() {
         guard let currentLocation = currentLocation else { return }
-        if previousLocation == currentLocation {
-            return
-        }
+        
         guard let entityDescription = NSEntityDescription.entity(forEntityName: "RouteCoordinate", in: context) else { return }
         
         if let routeCoordinate = NSManagedObject(entity: entityDescription, insertInto: context) as? RouteCoordinate {

@@ -31,6 +31,9 @@
 		22D64B69285F816F00EF626D /* HeartRateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D64B68285F816F00EF626D /* HeartRateManager.swift */; };
 		22DFBE272847F0610011F9B4 /* StartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22DFBE262847F0610011F9B4 /* StartViewModel.swift */; };
 		22DFBE292847F0E50011F9B4 /* StartDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22DFBE282847F0E50011F9B4 /* StartDataManager.swift */; };
+		22FCEC4F28637B2F00660201 /* ActivityListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FCEC4E28637B2F00660201 /* ActivityListPresenter.swift */; };
+		22FCEC5128637BDA00660201 /* ActivityListInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FCEC5028637BDA00660201 /* ActivityListInteractor.swift */; };
+		22FCEC5328638C2D00660201 /* ActivityListConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FCEC5228638C2D00660201 /* ActivityListConfigurator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,6 +63,9 @@
 		22D64B68285F816F00EF626D /* HeartRateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartRateManager.swift; sourceTree = "<group>"; };
 		22DFBE262847F0610011F9B4 /* StartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewModel.swift; sourceTree = "<group>"; };
 		22DFBE282847F0E50011F9B4 /* StartDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartDataManager.swift; sourceTree = "<group>"; };
+		22FCEC4E28637B2F00660201 /* ActivityListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityListPresenter.swift; sourceTree = "<group>"; };
+		22FCEC5028637BDA00660201 /* ActivityListInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityListInteractor.swift; sourceTree = "<group>"; };
+		22FCEC5228638C2D00660201 /* ActivityListConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityListConfigurator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,7 +103,8 @@
 			children = (
 				22B7E23D28469635007FF7AD /* StartVC */,
 				22A92FAA283BF1FA00E242C9 /* CurrentActivity */,
-				22B4FDD8284106C80045BCE4 /* Activity */,
+				22B4FDD8284106C80045BCE4 /* ActivityLogList */,
+				22FCEC4D286377C200660201 /* ActivityLogDetails */,
 				22A92FA7283BEF5500E242C9 /* Service Layer */,
 				22D2A2FA283E4D25004322E5 /* App */,
 				22A92FB2283C0C7E00E242C9 /* Helpers */,
@@ -147,13 +154,15 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
-		22B4FDD8284106C80045BCE4 /* Activity */ = {
+		22B4FDD8284106C80045BCE4 /* ActivityLogList */ = {
 			isa = PBXGroup;
 			children = (
 				22A59A45283F58D900F4BF23 /* ActivityListVC.swift */,
-				22B4FDD9284106EA0045BCE4 /* ActivityVC.swift */,
+				22FCEC4E28637B2F00660201 /* ActivityListPresenter.swift */,
+				22FCEC5028637BDA00660201 /* ActivityListInteractor.swift */,
+				22FCEC5228638C2D00660201 /* ActivityListConfigurator.swift */,
 			);
-			path = Activity;
+			path = ActivityLogList;
 			sourceTree = "<group>";
 		};
 		22B7E23D28469635007FF7AD /* StartVC */ = {
@@ -192,6 +201,14 @@
 				228BBC0A2837D5AF002AD32B /* SceneDelegate.swift */,
 			);
 			path = App;
+			sourceTree = "<group>";
+		};
+		22FCEC4D286377C200660201 /* ActivityLogDetails */ = {
+			isa = PBXGroup;
+			children = (
+				22B4FDD9284106EA0045BCE4 /* ActivityVC.swift */,
+			);
+			path = ActivityLogDetails;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -281,9 +298,12 @@
 				22B4FDEA28412A9E0045BCE4 /* TargetRunning.xcdatamodeld in Sources */,
 				22AF705A284CF0D300AEC786 /* StartDataModel.swift in Sources */,
 				22A92FA6283BE3FA00E242C9 /* CurrentActivityVC.swift in Sources */,
+				22FCEC5328638C2D00660201 /* ActivityListConfigurator.swift in Sources */,
 				228BBC0B2837D5AF002AD32B /* SceneDelegate.swift in Sources */,
+				22FCEC5128637BDA00660201 /* ActivityListInteractor.swift in Sources */,
 				22B4E692284E7D790073498C /* CircleProgressBar.swift in Sources */,
 				22A92FB1283C09FD00E242C9 /* Box.swift in Sources */,
+				22FCEC4F28637B2F00660201 /* ActivityListPresenter.swift in Sources */,
 				22C814DC284F8FBA00DD933E /* CircleProgressBarViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

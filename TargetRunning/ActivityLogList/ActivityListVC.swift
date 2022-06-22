@@ -8,12 +8,27 @@
 import UIKit
 import CoreData
 
+protocol ActivityListViewInputProtocol: AnyObject {
+    func reloadData(with activities: [Activity])
+}
+
+protocol ActivityListViewOutputProtocol: AnyObject {
+    init(view: ActivityListViewInputProtocol)
+    func viewDidLoad()
+    func didTapCell(at indexPath: IndexPath)
+    func getTimeString(from seconds: Int) -> String 
+}
+
 class ActivityListVC: UITableViewController {
+    
+    var presenter: ActivityListViewOutputProtocol!
     private var activities = [Activity]()
+    private let configurator = ActivityLlistConfigurator()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        fetchData()
+        configurator.configure(with: self)
+        presenter.viewDidLoad()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -23,24 +38,11 @@ class ActivityListVC: UITableViewController {
         }
     }
     
-    private func fetchData() {
-        let fetchRequest = Activity.fetchRequest()
-        do {
-            fetchRequest.sortDescriptors = [NSSortDescriptor.init(key: "date", ascending: false)]
-            activities = try StorageManager.shared.persistentContainer.viewContext.fetch(fetchRequest)
-        } catch let error {
-            print("Failed to fetch data", error)
-        }
-    }
+    
     // MARK: - Table view data source
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         activities.count
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        fetchData()
-        tableView.reloadData()
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -51,8 +53,8 @@ class ActivityListVC: UITableViewController {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium
         
-        let time = getTimeString(from: Int(activity.time))
-        let avgPaceDistance = getTimeString(from: Int(activity.avgPace))
+        let time = presenter.getTimeString(from: Int(activity.time))
+        let avgPaceDistance = presenter.getTimeString(from: Int(activity.avgPace))
         
         content.text = distance + "km in " + time + ", " + avgPaceDistance + " /km"
         if let date = activity.date {
@@ -62,22 +64,12 @@ class ActivityListVC: UITableViewController {
         
         return cell
     }
-    
-    private func getTimeString(from seconds: Int) -> String {
-        let hours = Int(seconds) / 3600
-        let minutes = Int(seconds) / 60 % 60
-        let seconds = Int(seconds) % 60
-        
-        var times: [String] = []
-        if hours > 0 {
-            times.append(String(format: "%02i", hours))
-        }
-        if minutes >= 0 {
-            times.append(String(format: "%02i", minutes))
-        }
-        times.append(String(format: "%02i", seconds))
-        
-        return times.joined(separator: ":")
+}
+
+// MARK: - ActivityListViewInputProtocol
+extension ActivityListVC: ActivityListViewInputProtocol {
+    func reloadData(with activities: [Activity]) {
+        self.activities = activities
+        tableView.reloadData()
     }
-    
 }
