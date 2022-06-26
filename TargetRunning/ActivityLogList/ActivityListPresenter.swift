@@ -12,6 +12,7 @@ class ActivityListPresenter: ActivityListViewOutputProtocol {
     
     unowned let view: ActivityListViewInputProtocol
     var interactor: ActivityListInteractorInputProtocol!
+    var router: ActivityListRouter!
     
     required init(view: ActivityListViewInputProtocol) {
         self.view = view
@@ -21,8 +22,8 @@ class ActivityListPresenter: ActivityListViewOutputProtocol {
         interactor.fetchActivityList()
     }
     
-    func didTapCell(at indexPath: IndexPath) {
-        
+    func didTapCell(for activity: Activity) {
+        router.openActivityDetailsVC(with: activity)
     }
     
     func getTimeString(from seconds: Int) -> String {

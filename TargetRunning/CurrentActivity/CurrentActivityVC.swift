@@ -93,7 +93,6 @@ class CurrentActivityVC: UIViewController {
         }
     }
     
-    
     private func setTimeDistance() {
         topLeftButton.setTitle(viewModel.timeDistanceString.value, for: .normal)
         topLeftButton.configuration?.subtitle = viewModel.timeDistanceSubtitle

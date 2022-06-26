@@ -231,7 +231,7 @@ class CurrentActivityViewModel: NSObject, CurrentActivityProtocol {
     }
     
     func finishButtonPressed() {
-        TimeManager.shared.stopTimer()
+        TimeManager.shared.finishTimer()
         LocationManager.shared.stop()
         saveActivity()
         

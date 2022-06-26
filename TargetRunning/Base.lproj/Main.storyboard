@@ -44,9 +44,6 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
-                                <connections>
-                                    <segue destination="k7Q-UE-b8l" kind="show" id="70B-bN-0MX"/>
-                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -56,15 +53,18 @@
                     </tableView>
                     <tabBarItem key="tabBarItem" title="Log" image="list.bullet.rectangle.portrait" catalog="system" id="GoM-oF-NZd"/>
                     <navigationItem key="navigationItem" title="Activity feed" id="cYO-0j-aC6"/>
+                    <connections>
+                        <segue destination="k7Q-UE-b8l" kind="show" identifier="activityDetails" id="ltw-NT-sF8"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5OW-WA-kCb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1009" y="-707"/>
+            <point key="canvasLocation" x="1001" y="-707"/>
         </scene>
         <!--Activity-->
         <scene sceneID="NUa-RS-6Nh">
             <objects>
-                <viewController id="k7Q-UE-b8l" customClass="ActivityVC" customModule="TargetRunning" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="k7Q-UE-b8l" customClass="ActivityLogDetailsVC" customModule="TargetRunning" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="gTG-Lz-5fM">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -404,9 +404,9 @@
                                         </buttonConfiguration>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gfx-UL-qtJ">
-                                        <rect key="frame" x="167" y="235" width="41.5" height="20.5"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
+                                        <rect key="frame" x="161" y="231.5" width="53.5" height="24"/>
+                                        <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="20"/>
+                                        <color key="textColor" systemColor="systemPinkColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
@@ -509,6 +509,9 @@
         </systemColor>
         <systemColor name="systemGray5Color">
             <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemPinkColor">
+            <color red="1" green="0.17647058823529413" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

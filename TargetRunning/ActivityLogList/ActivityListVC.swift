@@ -15,7 +15,7 @@ protocol ActivityListViewInputProtocol: AnyObject {
 protocol ActivityListViewOutputProtocol: AnyObject {
     init(view: ActivityListViewInputProtocol)
     func viewDidLoad()
-    func didTapCell(at indexPath: IndexPath)
+    func didTapCell(for activity: Activity)
     func getTimeString(from seconds: Int) -> String 
 }
 
@@ -32,10 +32,10 @@ class ActivityListVC: UITableViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let viewController = segue.destination as? ActivityVC else { return }
-        if let indexPath = tableView.indexPathForSelectedRow?.row {
-            viewController.activity = activities[indexPath]
-        }
+        guard let viewController = segue.destination as? ActivityLogDetailsVC else { return }
+        let configurator = ActivityLogDetailsConfigurator()
+        guard let activity = sender as? Activity  else { return }
+        configurator.configure(with: viewController, and: activity)
     }
     
     
@@ -63,6 +63,10 @@ class ActivityListVC: UITableViewController {
         cell.contentConfiguration = content
         
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        presenter.didTapCell(for: activities[indexPath.row])
     }
 }
 

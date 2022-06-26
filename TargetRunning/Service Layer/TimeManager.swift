@@ -44,6 +44,13 @@ class TimeManager {
 
     func stopTimer() {
         timer?.invalidate()
+        timer = nil
+    }
+    
+    func finishTimer() {
+        timer?.invalidate()
+        timer = nil
+        time = 0
     }
     
     func resumeTimer() {

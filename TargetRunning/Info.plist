@@ -2,7 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>Privacy - Bluetooth Always Usage DescriptionPrivacy - Bluetooth Always Usage Description</key>
+	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>App need to use your Bluetooth to search heart rate monitor</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>

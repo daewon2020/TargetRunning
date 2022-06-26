@@ -15,9 +15,11 @@ class ActivityLlistConfigurator: ActivityLlistConfiguratorProtocol {
     func configure(with viewController: ActivityListVC) {
         let presenter = ActivityListPresenter(view: viewController)
         let interactor = ActivityListInteractor(presenter: presenter)
+        let router = ActivityListRouter(viewController: viewController)
         
         viewController.presenter = presenter
         presenter.interactor = interactor
+        presenter.router = router
         
     }
     
