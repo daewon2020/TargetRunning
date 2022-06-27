@@ -13,53 +13,39 @@ import CoreLocation
 protocol ActivityLogDetailsViewInputProtocol: AnyObject {
     func displayRoute(for route: MKPolyline)
     func setMapRegion(with region: MKCoordinateRegion)
+    func reloadData(with cellData: [ActivityLogCellViewModel])
 }
 
 protocol ActivityLogDetailsViewOutputProtocol: AnyObject {
     func viewDidAppear()
+    func viewDidLoad()
 }
 
 class ActivityLogDetailsVC: UIViewController {
     
     @IBOutlet var mapView: MKMapView!
+    @IBOutlet var activityParamsTableView: UITableView!
+    
     
     var presenter: ActivityLogDetailsViewOutputProtocol!
     var configurator = ActivityLogDetailsConfigurator()
     
+    private var reusableCell = [ActivityLogCellViewModel]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         mapView.delegate = self
+        activityParamsTableView.dataSource = self
+        presenter.viewDidLoad()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         presenter.viewDidAppear()
+        
     }
-    
-//    private func setMapRegion() {
-//        let latitudes = route.map { $0.map { $0.latitude } }
-//        let longitudes = route.map { $0.map { $0.longitude } }
-//
-//        guard let maxLat = latitudes?.max() else { return }
-//        guard let minLat = latitudes?.min() else { return }
-//        guard let maxLong = longitudes?.max() else { return }
-//        guard let minLong = longitudes?.min() else { return }
-//
-//        let center = CLLocationCoordinate2D(
-//            latitude: (minLat + maxLat) / 2,
-//            longitude: (minLong + maxLong) / 2
-//        )
-//        let span = MKCoordinateSpan(
-//            latitudeDelta: (maxLat - minLat) * 1.3,
-//            longitudeDelta: (maxLong - minLong) * 1.3
-//        )
-//
-//        let region = MKCoordinateRegion.init(center: center, span: span)
-//        mapView.setRegion(region, animated: true)
-//    }
 }
 
 //MARK: - MKMapViewDelegate
-
 extension ActivityLogDetailsVC: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
@@ -75,8 +61,12 @@ extension ActivityLogDetailsVC: MKMapViewDelegate {
 }
 
 //MARK: - ActivityLogDetailsViewInputProtocol
-
 extension ActivityLogDetailsVC: ActivityLogDetailsViewInputProtocol {
+    func reloadData(with cellData: [ActivityLogCellViewModel]) {
+        reusableCell = cellData
+        activityParamsTableView.reloadData()
+    }
+    
     func displayRoute(for route: MKPolyline) {
         mapView.addOverlay(route)
     }
@@ -84,4 +74,22 @@ extension ActivityLogDetailsVC: ActivityLogDetailsViewInputProtocol {
     func setMapRegion(with region: MKCoordinateRegion) {
         mapView.setRegion(region, animated: true)
     }
+    
+    
 }
+
+//MARK: - TableViewDataSource
+extension ActivityLogDetailsVC: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        reusableCell.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cellViewModel = reusableCell[indexPath.row]
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellViewModel.cellID, for: indexPath) as? ActivityLogTableViewCell else { return UITableViewCell() }
+        cell.viewModel = cellViewModel
+        return cell
+    }
+
+}
+

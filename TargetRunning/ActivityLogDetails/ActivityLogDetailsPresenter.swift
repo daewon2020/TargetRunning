@@ -10,12 +10,28 @@ import MapKit
 import CoreLocation
 
 class ActivityLogDetailsPresenter: ActivityLogDetailsInteractorOutputProtocol {
-
     unowned let view: ActivityLogDetailsViewInputProtocol
     var interactor: ActivityLogDetailsInteractorInputProtocol!
     
     init(view: ActivityLogDetailsViewInputProtocol) {
         self.view = view
+    }
+    
+    func activityDidRecieve(activity: Activity) {
+        var cellData = [ActivityLogCellViewModel]()
+        cellData.append(ActivityLogCellViewModel(
+            paramName: "Total time",
+            paramValue: "\(activity.time)")
+        )
+        cellData.append(ActivityLogCellViewModel(
+            paramName: "Total distance",
+            paramValue: "\(activity.distance)")
+        )
+        cellData.append(ActivityLogCellViewModel(
+            paramName: "AVG pace",
+            paramValue: "\(activity.avgPace)")
+        )
+        view.reloadData(with: cellData)
     }
     
     func routeDidRecieve(route: [RouteCoordinate]) {
@@ -37,7 +53,7 @@ class ActivityLogDetailsPresenter: ActivityLogDetailsInteractorOutputProtocol {
             view.setMapRegion(with: mapRegion)
         }
     }
-    
+
     private func getMapRegion(from route: [RouteCoordinate]) -> MKCoordinateRegion? {
         let latitudes = route.map { $0.latitude }
         let longitudes = route.map { $0.longitude }
@@ -61,9 +77,14 @@ class ActivityLogDetailsPresenter: ActivityLogDetailsInteractorOutputProtocol {
     }
 }
 
-
+//MARK: - ActivityLogDetailsViewOutputProtocol
 extension ActivityLogDetailsPresenter: ActivityLogDetailsViewOutputProtocol {
     func viewDidAppear() {
-        interactor.fetchRoute()
+    
     }
+    
+    func viewDidLoad() {
+        interactor.fetchActivityData()
+    }
+    
 }

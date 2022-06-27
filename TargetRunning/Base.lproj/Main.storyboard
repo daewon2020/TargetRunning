@@ -75,17 +75,52 @@
                                     <constraint firstAttribute="height" constant="300" id="gCz-hf-oG6"/>
                                 </constraints>
                             </mapView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="1ey-iO-Kdo">
+                                <rect key="frame" x="0.0" y="344" width="375" height="274"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="activityLogCellID" textLabel="a9o-z2-4s0" detailTextLabel="pXh-lG-HXk" style="IBUITableViewCellStyleValue1" id="BQC-VZ-F1Z" customClass="ActivityLogTableViewCell" customModule="TargetRunning" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="50" width="375" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="BQC-VZ-F1Z" id="UsY-GH-TH1">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="a9o-z2-4s0">
+                                                    <rect key="frame" x="16" y="15" width="25" height="14.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="pXh-lG-HXk">
+                                                    <rect key="frame" x="326" y="15" width="33" height="14.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="YDO-KJ-eYe"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="1ey-iO-Kdo" firstAttribute="leading" secondItem="YDO-KJ-eYe" secondAttribute="leading" id="7t4-5J-GmJ"/>
+                            <constraint firstItem="YDO-KJ-eYe" firstAttribute="bottom" secondItem="1ey-iO-Kdo" secondAttribute="bottom" id="EkR-FZ-GTh"/>
                             <constraint firstItem="TKK-4N-kJ7" firstAttribute="leading" secondItem="YDO-KJ-eYe" secondAttribute="leading" id="OqF-UX-5OK"/>
+                            <constraint firstItem="YDO-KJ-eYe" firstAttribute="trailing" secondItem="1ey-iO-Kdo" secondAttribute="trailing" id="bmx-5f-gd3"/>
                             <constraint firstItem="YDO-KJ-eYe" firstAttribute="trailing" secondItem="TKK-4N-kJ7" secondAttribute="trailing" id="iAe-az-TBI"/>
+                            <constraint firstItem="1ey-iO-Kdo" firstAttribute="top" secondItem="TKK-4N-kJ7" secondAttribute="bottom" id="tXP-gV-8in"/>
                             <constraint firstItem="TKK-4N-kJ7" firstAttribute="top" secondItem="YDO-KJ-eYe" secondAttribute="top" id="uQe-MH-NaK"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Activity" id="1fG-om-2m9"/>
                     <connections>
+                        <outlet property="activityParamsTableView" destination="1ey-iO-Kdo" id="kEG-7q-Ehu"/>
                         <outlet property="mapView" destination="TKK-4N-kJ7" id="Y1U-fK-Bwe"/>
                     </connections>
                 </viewController>

@@ -35,6 +35,8 @@
 		22D64B69285F816F00EF626D /* HeartRateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D64B68285F816F00EF626D /* HeartRateManager.swift */; };
 		22DFBE272847F0610011F9B4 /* StartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22DFBE262847F0610011F9B4 /* StartViewModel.swift */; };
 		22DFBE292847F0E50011F9B4 /* StartDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22DFBE282847F0E50011F9B4 /* StartDataManager.swift */; };
+		22E86D8A2869EB4D00B819BB /* ActivityLogTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E86D892869EB4D00B819BB /* ActivityLogTableViewCell.swift */; };
+		22E86D8C2869ED8C00B819BB /* ActivityLogCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E86D8B2869ED8C00B819BB /* ActivityLogCellViewModel.swift */; };
 		22FCEC4F28637B2F00660201 /* ActivityListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FCEC4E28637B2F00660201 /* ActivityListPresenter.swift */; };
 		22FCEC5128637BDA00660201 /* ActivityListInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FCEC5028637BDA00660201 /* ActivityListInteractor.swift */; };
 		22FCEC5328638C2D00660201 /* ActivityListConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FCEC5228638C2D00660201 /* ActivityListConfigurator.swift */; };
@@ -71,6 +73,8 @@
 		22D64B68285F816F00EF626D /* HeartRateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartRateManager.swift; sourceTree = "<group>"; };
 		22DFBE262847F0610011F9B4 /* StartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewModel.swift; sourceTree = "<group>"; };
 		22DFBE282847F0E50011F9B4 /* StartDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartDataManager.swift; sourceTree = "<group>"; };
+		22E86D892869EB4D00B819BB /* ActivityLogTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityLogTableViewCell.swift; sourceTree = "<group>"; };
+		22E86D8B2869ED8C00B819BB /* ActivityLogCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityLogCellViewModel.swift; sourceTree = "<group>"; };
 		22FCEC4E28637B2F00660201 /* ActivityListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityListPresenter.swift; sourceTree = "<group>"; };
 		22FCEC5028637BDA00660201 /* ActivityListInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityListInteractor.swift; sourceTree = "<group>"; };
 		22FCEC5228638C2D00660201 /* ActivityListConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityListConfigurator.swift; sourceTree = "<group>"; };
@@ -212,9 +216,19 @@
 			path = App;
 			sourceTree = "<group>";
 		};
+		22E86D882869EB0D00B819BB /* ActivityLogCell */ = {
+			isa = PBXGroup;
+			children = (
+				22E86D892869EB4D00B819BB /* ActivityLogTableViewCell.swift */,
+				22E86D8B2869ED8C00B819BB /* ActivityLogCellViewModel.swift */,
+			);
+			path = ActivityLogCell;
+			sourceTree = "<group>";
+		};
 		22FCEC4D286377C200660201 /* ActivityLogDetails */ = {
 			isa = PBXGroup;
 			children = (
+				22E86D882869EB0D00B819BB /* ActivityLogCell */,
 				22B4FDD9284106EA0045BCE4 /* ActivityLogDetailsVC.swift */,
 				22CDCEFB2868A4BA00C02D32 /* ActivityLogDetailsPresenter.swift */,
 				22CDCEFD2868A4E900C02D32 /* ActivityLogDetailsInteractor.swift */,
@@ -297,6 +311,7 @@
 				22C814E0284FD79700DD933E /* NetworkManager.swift in Sources */,
 				22A92FAC283BF21E00E242C9 /* CurrentActivityViewModel.swift in Sources */,
 				22DFBE292847F0E50011F9B4 /* StartDataManager.swift in Sources */,
+				22E86D8C2869ED8C00B819BB /* ActivityLogCellViewModel.swift in Sources */,
 				22A59A46283F58D900F4BF23 /* ActivityListVC.swift in Sources */,
 				22D64B69285F816F00EF626D /* HeartRateManager.swift in Sources */,
 				22C814E2284FD7BA00DD933E /* WeatherDataModel.swift in Sources */,
@@ -313,6 +328,7 @@
 				22A92FA6283BE3FA00E242C9 /* CurrentActivityVC.swift in Sources */,
 				22FCEC5328638C2D00660201 /* ActivityListConfigurator.swift in Sources */,
 				22CDCF002868A51B00C02D32 /* ActivityLogDetailsConfigurator.swift in Sources */,
+				22E86D8A2869EB4D00B819BB /* ActivityLogTableViewCell.swift in Sources */,
 				228BBC0B2837D5AF002AD32B /* SceneDelegate.swift in Sources */,
 				22CDCEFE2868A4E900C02D32 /* ActivityLogDetailsInteractor.swift in Sources */,
 				22CDCEFC2868A4BA00C02D32 /* ActivityLogDetailsPresenter.swift in Sources */,

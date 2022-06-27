@@ -9,12 +9,12 @@ import Foundation
 
 protocol ActivityLogDetailsInteractorInputProtocol: AnyObject {
     init(presenter: ActivityLogDetailsInteractorOutputProtocol, activity: Activity)
-    func fetchRoute()
+    func fetchActivityData()
 }
 
 protocol ActivityLogDetailsInteractorOutputProtocol: AnyObject {
     func routeDidRecieve(route: [RouteCoordinate])
-    
+    func activityDidRecieve(activity: Activity)
 }
 
 class ActivityLogDetailsInteractor: ActivityLogDetailsInteractorInputProtocol {
@@ -26,7 +26,12 @@ class ActivityLogDetailsInteractor: ActivityLogDetailsInteractorInputProtocol {
         self.activity = activity
     }
  
-    func fetchRoute() {
+    func fetchActivityData() {
+        fetchRoute()
+        presenter.activityDidRecieve(activity: activity)
+    }
+    
+    private func fetchRoute() {
         let request = RouteCoordinate.fetchRequest()
         request.predicate = NSPredicate(format: "ANY activity = %@", activity)
         request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: true)]
@@ -36,6 +41,5 @@ class ActivityLogDetailsInteractor: ActivityLogDetailsInteractorInputProtocol {
         } catch let error {
             print("Failed to fetch data", error)
         }
-        
     }
 }
