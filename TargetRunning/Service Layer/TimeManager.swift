@@ -93,5 +93,4 @@ class TimeManager {
         UIApplication.shared.endBackgroundTask(backgroundTask)
         backgroundTask = .invalid
     }
-    
 }

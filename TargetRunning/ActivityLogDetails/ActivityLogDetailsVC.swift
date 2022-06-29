@@ -74,8 +74,6 @@ extension ActivityLogDetailsVC: ActivityLogDetailsViewInputProtocol {
     func setMapRegion(with region: MKCoordinateRegion) {
         mapView.setRegion(region, animated: true)
     }
-    
-    
 }
 
 //MARK: - TableViewDataSource

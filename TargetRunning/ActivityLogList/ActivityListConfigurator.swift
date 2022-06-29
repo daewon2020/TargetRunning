@@ -20,8 +20,5 @@ class ActivityLlistConfigurator: ActivityLlistConfiguratorProtocol {
         viewController.presenter = presenter
         presenter.interactor = interactor
         presenter.router = router
-        
     }
-    
-    
 }

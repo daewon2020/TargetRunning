@@ -8,18 +8,16 @@
 import Foundation
 
 enum RunGoal {
-    case Distance
-    case Time
+    case distance
+    case time
 }
 class StartDataManager {
     static var shared = StartDataManager()
     var distancePickerData: [Array<Int>] {
-        get {
             [Array(0...50), meters]
-        }
     }
     let timePickerData = [Array(0...10),Array(0...59)]
-    var runGoal = RunGoal.Time
+    var runGoal = RunGoal.time
     
     private let meters = Array(0...9).map {$0 * 100}
     init() {}

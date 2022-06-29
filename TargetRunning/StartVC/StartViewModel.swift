@@ -85,15 +85,11 @@ class StartViewModel: StartViewModelProtocol {
     }
 
     var distancePickerData: [[Int]] {
-        get {
             StartDataManager.shared.distancePickerData
-        }
     }
     
     var timePickerData: [[Int]] {
-        get {
             StartDataManager.shared.timePickerData
-        }
     }
     
     required init() {
@@ -105,16 +101,16 @@ class StartViewModel: StartViewModelProtocol {
     func showTargetList() -> UIAlertController {
         let alertControler = UIAlertController(title: nil , message: nil, preferredStyle: .actionSheet)
         let distanceAction = UIAlertAction(title: "Distance", style: .default) { action in
-            StartDataManager.shared.runGoal = .Distance
-            self.runGoal.value = .Distance
+            StartDataManager.shared.runGoal = .distance
+            self.runGoal.value = .distance
         }
         let timeAction = UIAlertAction(title: "Time", style: .default) { action in
-            StartDataManager.shared.runGoal = .Time
-            self.runGoal.value = .Time
+            StartDataManager.shared.runGoal = .time
+            self.runGoal.value = .time
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { action in
-            StartDataManager.shared.runGoal = .Time
-            self.runGoal.value = .Time
+            StartDataManager.shared.runGoal = .time
+            self.runGoal.value = .time
         }
         alertControler.addAction(distanceAction)
         alertControler.addAction(timeAction)
@@ -135,12 +131,12 @@ class StartViewModel: StartViewModelProtocol {
     
     func setGoalValue(for firstRowIndex: Int, and secondRowIndex: Int, completion: (String) -> ()) {
         switch runGoal.value {
-            case .Distance:
+            case .distance:
                 kilometers = StartDataManager.shared.distancePickerData[0][firstRowIndex]
                 meters = StartDataManager.shared.distancePickerData[1][secondRowIndex]
                 let goalValueString =  meters == 0 ? "\(kilometers)" : "\(kilometers),\(meters / 100)"
                 completion(goalValueString)
-            case .Time:
+            case .time:
                 hours = StartDataManager.shared.timePickerData[0][firstRowIndex]
                 minutes = StartDataManager.shared.timePickerData[1][secondRowIndex]
                 let goalValueString = String(format: "%02i", hours) + ":" + String(format: "%02i", minutes)
@@ -192,9 +188,9 @@ class StartViewModel: StartViewModelProtocol {
     
     private func checkGoal() -> Bool {
         switch runGoal.value {
-            case .Distance:
+            case .distance:
                 return kilometers == 0 && meters == 0 ? false : true
-            case .Time:
+            case .time:
                 return hours == 0 && minutes == 0 ? false : true
         }
     }

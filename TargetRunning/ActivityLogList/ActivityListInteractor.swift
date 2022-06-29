@@ -18,7 +18,6 @@ protocol ActivityListInteractorInputProtocol: AnyObject {
 }
 
 class ActivityListInteractor: ActivityListInteractorInputProtocol {
-    
     unowned let presenter: ActivityListInteractorOutputProtocol
     
     required init(presenter: ActivityListInteractorOutputProtocol) {

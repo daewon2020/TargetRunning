@@ -11,8 +11,8 @@ import CoreData
 import MapKit
 
 enum TimerState {
-    case Start
-    case Stop
+    case start
+    case stop
 }
 
 protocol CurrentActivityProtocol {
@@ -77,17 +77,13 @@ class CurrentActivityViewModel: NSObject, CurrentActivityProtocol {
     
     var paceTime = 0
     var paceSegmentString: String {
-        get {
             getTimeString(from: paceSegment)
-        }
     }
     
     var avgPaceDistance: Int {
-        get {
             distance != 0
             ? Int(Double(time.value) / distance * 1000)
             : 0
-        }
     }
     
     var avgPaceDistanceString: String {
@@ -121,9 +117,9 @@ class CurrentActivityViewModel: NSObject, CurrentActivityProtocol {
             let minutes = startParameters.minutes
             let seconds = hours * 3600 + minutes * 60
             switch startParameters.goal {
-                case .Distance:
+                case .distance:
                     return "\(kilometers),\(meters / 100) km"
-                case .Time:
+                case .time:
                     return getTimeString(from: seconds)
             }
         }
@@ -131,9 +127,9 @@ class CurrentActivityViewModel: NSObject, CurrentActivityProtocol {
     
     var currentCounterString: String {
         switch startParameters.goal {
-            case .Distance:
+            case .distance:
                 return distanceString
-            case .Time:
+            case .time:
                 return timeString
         }
     }
@@ -142,9 +138,9 @@ class CurrentActivityViewModel: NSObject, CurrentActivityProtocol {
     var timeDistanceSubtitle: String {
         get {
             switch startParameters.goal {
-                case .Distance:
+                case .distance:
                     return "time"
-                case .Time:
+                case .time:
                     return "distance"
             }
         }
@@ -154,25 +150,23 @@ class CurrentActivityViewModel: NSObject, CurrentActivityProtocol {
     private var timerState: TimerState {
         didSet {
             switch timerState {
-                case .Start:
+                case .start:
                     self.startResumeButtonImage.value = UIImage(systemName: "play.fill")
-                case .Stop:
+                case .stop:
                     self.startResumeButtonImage.value = UIImage(systemName: "stop.fill")
             }
         }
     }
     
     private var distanceGoal: Int {
-        get {
             startParameters.kilometers * 1000 + startParameters.meters
-        }
     }
     
     private let startParameters: StartParameters!
     
     required init(startParametes: StartParameters) {
         paceDistance = 0
-        timerState = .Stop
+        timerState = .stop
         startParameters = startParametes
 
         super.init()
@@ -183,9 +177,9 @@ class CurrentActivityViewModel: NSObject, CurrentActivityProtocol {
             self.addRouteCoordinate()
             
             switch self.startParameters.goal {
-                case .Distance:
+                case .distance:
                     self.timeDistanceString.value = self.timeString
-                case .Time:
+                case .time:
                     self.progressValue.value += self.stepValue
             }
         }
@@ -211,22 +205,22 @@ class CurrentActivityViewModel: NSObject, CurrentActivityProtocol {
         LocationManager.shared.start()
         createNewActivity()
         
-        timerState = .Stop
+        timerState = .stop
     }
     
     func stopResumeButtonPressed() {
         switch timerState {
-            case .Start:
+            case .start:
                 TimeManager.shared.resumeTimer()
                 LocationManager.shared.start()
                 
-                timerState = .Stop
-            case .Stop:
+                timerState = .stop
+            case .stop:
                 TimeManager.shared.stopTimer()
                 LocationManager.shared.stop()
                 StorageManager.shared.saveContext()
                 previousLocation = nil
-                timerState = .Start
+                timerState = .start
         }
     }
     
@@ -235,7 +229,7 @@ class CurrentActivityViewModel: NSObject, CurrentActivityProtocol {
         LocationManager.shared.stop()
         saveActivity()
         
-        timerState = .Start
+        timerState = .start
     }
     
     func getMKPolyline(with coordinates: [CLLocationCoordinate2D]) -> MKPolyline {
@@ -307,7 +301,7 @@ extension CurrentActivityViewModel {
             paceDistance += currentDistance
             
             switch startParameters.goal {
-                case .Distance:
+                case .distance:
                     if progressValue.value < 1 {
                         progressValue.value = distance / Double(distanceGoal)
                     } else {
@@ -315,7 +309,7 @@ extension CurrentActivityViewModel {
                             goalLabelColor.value = UIColor.systemGreen
                         }
                     }   
-                case .Time:
+                case .time:
                     timeDistanceString.value = distanceString
             }
             
@@ -364,9 +358,9 @@ extension CurrentActivityViewModel {
     
     private func calculateStepValue() -> Double {
         switch startParameters.goal {
-            case .Distance:
+            case .distance:
                 return 1.0 / Double(startParameters.meters + startParameters.kilometers * 1000)
-            case .Time:
+            case .time:
                 return 1.0 / Double(startParameters.hourse * 3600 + startParameters.minutes * 60)
         }
     }

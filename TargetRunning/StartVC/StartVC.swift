@@ -63,11 +63,11 @@ class StartVC: UIViewController {
         viewModel = StartViewModel()
         viewModel.runGoal.bind { runGoal in
             switch self.viewModel.runGoal.value {
-                case .Distance:
+                case .distance:
                     self.goalValueButton.setTitle("00,0", for: .normal)
                     self.goalValueButton.configuration?.subtitle = "kilometers"
                     self.goalButton.setTitle("Distance", for: .normal)
-                case .Time:
+                case .time:
                     self.goalValueButton.setTitle("00:00", for: .normal)
                     self.goalValueButton.configuration?.subtitle = "hourse:minutes"
                     self.goalButton.setTitle("Time", for: .normal)
@@ -154,31 +154,31 @@ class StartVC: UIViewController {
 extension StartVC: UIPickerViewDataSource, UIPickerViewDelegate {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         switch viewModel.runGoal.value {
-            case .Distance:
+            case .distance:
                 return viewModel.distancePickerData.count
-            case .Time:
+            case .time:
                 return viewModel.timePickerData.count
         }
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         switch viewModel.runGoal.value {
-            case .Distance:
+            case .distance:
                 return viewModel.distancePickerData[component].count
-            case .Time:
+            case .time:
                 return viewModel.timePickerData[component].count
         }
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         switch viewModel.runGoal.value {
-            case .Distance:
+            case .distance:
                 switch component {
                     case 0: return "\(viewModel.distancePickerData[component][row]) km"
                     case 1: return "\(viewModel.distancePickerData[component][row]) m"
                     default: return nil
                 }
-            case .Time:
+            case .time:
                 switch component {
                     case 0: return "\(viewModel.timePickerData[component][row]) hourse"
                     case 1: return "\(viewModel.timePickerData[component][row]) min"

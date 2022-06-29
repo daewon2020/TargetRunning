@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 class ActivityListPresenter: ActivityListViewOutputProtocol {
     
     unowned let view: ActivityListViewInputProtocol
@@ -44,7 +43,7 @@ class ActivityListPresenter: ActivityListViewOutputProtocol {
     }
 }
 
-//MARK: - ActivityListInteractorOutputProtocol
+// MARK: - ActivityListInteractorOutputProtocol
 extension ActivityListPresenter: ActivityListInteractorOutputProtocol {
     func activityListDidRecieve(_ activities: [Activity]) {
         view.reloadData(with: activities)
