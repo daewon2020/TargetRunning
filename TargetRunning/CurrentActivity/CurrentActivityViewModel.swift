@@ -228,7 +228,8 @@ class CurrentActivityViewModel: NSObject, CurrentActivityProtocol {
         TimeManager.shared.finishTimer()
         LocationManager.shared.stop()
         saveActivity()
-        
+        print(time.value)
+        print(avgPaceDistance)
         timerState = .start
     }
     
@@ -253,6 +254,7 @@ extension CurrentActivityViewModel {
         if let activity = activity {
             activity.avgPace = Int64(avgPaceDistance)
             activity.time = Int64(time.value)
+            addPaceInfo()
             StorageManager.shared.saveContext()
         }
     }

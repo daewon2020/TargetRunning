@@ -15,6 +15,7 @@ protocol ActivityLogDetailsInteractorInputProtocol: AnyObject {
 protocol ActivityLogDetailsInteractorOutputProtocol: AnyObject {
     func routeDidRecieve(route: [RouteCoordinate])
     func activityDidRecieve(activity: Activity)
+    func paceDidRecieve(pace: [Pace])
 }
 
 class ActivityLogDetailsInteractor: ActivityLogDetailsInteractorInputProtocol {
@@ -28,7 +29,20 @@ class ActivityLogDetailsInteractor: ActivityLogDetailsInteractorInputProtocol {
  
     func fetchActivityData() {
         fetchRoute()
+        fetchPace()
         presenter.activityDidRecieve(activity: activity)
+    }
+    
+    private func fetchPace() {
+        let request = Pace.fetchRequest()
+        request.predicate = NSPredicate(format: "ANY activity = %@", activity)
+        request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: true)]
+        do {
+            let pace = try StorageManager.shared.persistentContainer.viewContext.fetch(request)
+            presenter.paceDidRecieve(pace: pace)
+        } catch let error {
+            print("Failed to fetch data", error)
+        }
     }
     
     private func fetchRoute() {

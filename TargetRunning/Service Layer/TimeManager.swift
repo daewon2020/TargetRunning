@@ -50,7 +50,7 @@ class TimeManager {
     func finishTimer() {
         timer?.invalidate()
         timer = nil
-        time = 0
+        endBackgroundTask()
     }
     
     func resumeTimer() {
@@ -82,14 +82,13 @@ class TimeManager {
     }
     
     private func registerBackgroundTask() {
-        backgroundTask = UIApplication.shared.beginBackgroundTask { 
+        backgroundTask = UIApplication.shared.beginBackgroundTask {
             self.endBackgroundTask()
         }
         assert(backgroundTask != .invalid)
     }
     
     private func endBackgroundTask() {
-        print("Background task ended.")
         UIApplication.shared.endBackgroundTask(backgroundTask)
         backgroundTask = .invalid
     }

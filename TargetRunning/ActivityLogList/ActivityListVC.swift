@@ -15,6 +15,7 @@ protocol ActivityListViewInputProtocol: AnyObject {
 protocol ActivityListViewOutputProtocol: AnyObject {
     init(view: ActivityListViewInputProtocol)
     func viewDidLoad()
+    func viewDidAppear()
     func didTapCell(for activity: Activity)
     func getTimeString(from seconds: Int) -> String 
 }
@@ -29,6 +30,11 @@ class ActivityListVC: UITableViewController {
         super.viewDidLoad()
         configurator.configure(with: self)
         presenter.viewDidLoad()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        presenter.viewDidAppear()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

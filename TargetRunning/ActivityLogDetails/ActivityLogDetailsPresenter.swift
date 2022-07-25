@@ -53,6 +53,12 @@ class ActivityLogDetailsPresenter: ActivityLogDetailsInteractorOutputProtocol {
             view.setMapRegion(with: mapRegion)
         }
     }
+    
+    func paceDidRecieve(pace: [Pace]) {
+        for pace in pace {
+            print(pace.time)
+        }
+    }
 
     private func getMapRegion(from route: [RouteCoordinate]) -> MKCoordinateRegion? {
         let latitudes = route.map { $0.latitude }

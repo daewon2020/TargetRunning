@@ -217,19 +217,19 @@
 			path = App;
 			sourceTree = "<group>";
 		};
-		22E86D882869EB0D00B819BB /* ActivityLogCell */ = {
+		22E86D882869EB0D00B819BB /* ActivityLogTableViewCell */ = {
 			isa = PBXGroup;
 			children = (
 				22E86D892869EB4D00B819BB /* ActivityLogTableViewCell.swift */,
 				22E86D8B2869ED8C00B819BB /* ActivityLogCellViewModel.swift */,
 			);
-			path = ActivityLogCell;
+			path = ActivityLogTableViewCell;
 			sourceTree = "<group>";
 		};
 		22FCEC4D286377C200660201 /* ActivityLogDetails */ = {
 			isa = PBXGroup;
 			children = (
-				22E86D882869EB0D00B819BB /* ActivityLogCell */,
+				22E86D882869EB0D00B819BB /* ActivityLogTableViewCell */,
 				22B4FDD9284106EA0045BCE4 /* ActivityLogDetailsVC.swift */,
 				22CDCEFB2868A4BA00C02D32 /* ActivityLogDetailsPresenter.swift */,
 				22CDCEFD2868A4E900C02D32 /* ActivityLogDetailsInteractor.swift */,

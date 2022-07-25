@@ -30,7 +30,6 @@ class ActivityListInteractor: ActivityListInteractorInputProtocol {
             fetchRequest.sortDescriptors = [NSSortDescriptor.init(key: "date", ascending: false)]
             let activities = try StorageManager.shared.persistentContainer.viewContext.fetch(fetchRequest)
             self.presenter.activityListDidRecieve(activities)
-            
         } catch let error {
             print("Failed to fetch data", error)
         }

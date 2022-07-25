@@ -18,6 +18,10 @@ class ActivityListPresenter: ActivityListViewOutputProtocol {
     }
     
     func viewDidLoad() {
+        
+    }
+    
+    func viewDidAppear() {
         interactor.fetchActivityList()
     }
     
